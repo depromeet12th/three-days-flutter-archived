@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>526416542267-vi5e0m24ogr6n5dmu96oos99k75fu6hn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.526416542267-vi5e0m24ogr6n5dmu96oos99k75fu6hn</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCYVDBCPTO4vQv4L3LGnnrvxVu30PI9Ls8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>526416542267</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.threeDays</string>
+	<key>PROJECT_ID</key>
+	<string>three-days-bd5f3</string>
+	<key>STORAGE_BUCKET</key>
+	<string>three-days-bd5f3.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:526416542267:ios:638558ba14a415bd183a1e</string>
+</dict>
+</plist>
