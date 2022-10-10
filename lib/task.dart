@@ -44,7 +44,9 @@ class Task extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _showModalBottomSheet(context);
+                  },
                   icon: const Icon(
                     Icons.more_vert,
                     color: Color.fromRGBO(0xA6, 0xA6, 0xA6, 1.0),
@@ -68,6 +70,37 @@ class Task extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 200,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTapUp: (_) {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('삭제하기'),
+                ),
+                GestureDetector(
+                  onTapUp: (_) {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('수정하기'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
