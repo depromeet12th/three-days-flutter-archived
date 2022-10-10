@@ -16,7 +16,7 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "New iOS build for Digging app"
+  desc "New iOS build for ThreeDays app"
   lane :ios_beta_app do
     build_app(
       scheme: "Runner",
