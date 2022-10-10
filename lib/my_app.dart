@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:three_days/task_list_page.dart';
+import 'package:three_days/task/task_create_page.dart';
+import 'package:three_days/task/task_list_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,10 +21,19 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          elevation: 0.0,
+          backgroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            color: Color.fromRGBO(0x1A, 0x1F, 27, 1.0),
+          ),
+        )
       ),
-      initialRoute: '/',
+      initialRoute: '/task/list',
       routes: {
-        '/': (context) => const TaskListPage(),
+        '/task/list': (context) => const TaskListPage(),
+        '/task/create': (context) => const TaskCreatePage(),
       },
     );
   }

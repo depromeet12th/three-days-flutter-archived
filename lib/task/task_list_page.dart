@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:three_days/task.dart';
+import 'package:three_days/task/task.dart';
 
 class TaskListPage extends StatelessWidget {
   const TaskListPage({super.key});
@@ -10,7 +10,7 @@ class TaskListPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          color: const Color.fromRGBO(255, 255, 255, 1.0),
+          color: const Color.fromRGBO(0xFF, 0xFF, 0xFF, 1.0),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -29,9 +29,7 @@ class TaskListPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if (kDebugMode) {
-              print('floatingActionButton');
-            }
+            Navigator.of(context).pushNamed('/task/create');
           },
           backgroundColor: Colors.white,
           child: const Icon(
