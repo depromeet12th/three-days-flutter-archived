@@ -1,0 +1,13 @@
+name: build-ios-app
+on:
+  push:
+    branches:
+      - 'develop'
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd ios && fastlane ios_beta_app
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
