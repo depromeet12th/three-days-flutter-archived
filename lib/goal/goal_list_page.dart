@@ -15,6 +15,15 @@ class GoalListPage extends StatelessWidget {
         title: '일어나자마자 물 마시기',
         days: 3,
       ),
+      Goal(
+        title: '코딩테스트 1문제 풀기',
+        days: 2,
+        clapIndex: 1,
+      ),
+      Goal(
+        title: '샐러드 먹기',
+        days: 10,
+      ),
     ];
 
     return SafeArea(
@@ -22,7 +31,11 @@ class GoalListPage extends StatelessWidget {
         body: Container(
           color: const Color.fromRGBO(0xFF, 0xFF, 0xFF, 1.0),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.only(
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -48,7 +61,9 @@ class GoalListPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 32),
-                _getGoals(goals),
+                Expanded(
+                  child: _getGoals(goals),
+                ),
               ],
             ),
           ),
@@ -96,6 +111,7 @@ class GoalListPage extends StatelessWidget {
       return const InitialGoal();
     } else {
       return ListView.separated(
+        scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: goals.length,
         itemBuilder: (BuildContext context, int index) =>
