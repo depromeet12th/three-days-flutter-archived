@@ -68,6 +68,34 @@ class GoalListPage extends StatelessWidget {
             ),
           ),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '홈',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.table_chart_rounded),
+              label: '통계',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: '마이페이지',
+            ),
+          ],
+          onTap: (value) {
+            switch (value) {
+              case 0:
+                break;
+              case 1:
+                Navigator.of(context).pushReplacementNamed('/statistics');
+                break;
+              case 2:
+                Navigator.of(context).pushReplacementNamed('/mypage');
+                break;
+            }
+          },
+        ),
       ),
     );
   }

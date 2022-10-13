@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:three_days/goal/goal_add_page.dart';
 import 'package:three_days/goal/goal_list_page.dart';
+import 'package:three_days/mypage_page.dart';
+import 'package:three_days/statistics_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -34,6 +36,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/goal/list': (context) => const GoalListPage(),
         '/goal/add': (context) => const GoalAddPage(),
+        '/statistics': (context) => const StatisticsPage(),
+        '/mypage': (context) => const MypagePage(),
       },
     );
   }
