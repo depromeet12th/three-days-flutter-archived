@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:three_days/goal/goal.dart';
 
-class Goal extends StatelessWidget {
-  const Goal({
+class GoalWidget extends StatelessWidget {
+  const GoalWidget({
     super.key,
-    required this.title,
-    required this.days,
+    required this.goal,
   });
 
-  final String title;
-  final int days;
+  final Goal goal;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +26,14 @@ class Goal extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      goal.title,
                       style: const TextStyle(
                         color: Color.fromRGBO(0x1A, 0x1F, 0x27, 1.0),
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      '짝심 연속 $days일째',
+                      '짝심 연속 ${goal.days}일째',
                       style: const TextStyle(
                         color: Color.fromRGBO(0x8D, 0x95, 0xA0, 1.0),
                         fontSize: 15,
@@ -58,11 +57,11 @@ class Goal extends StatelessWidget {
               children: [
                 Image.asset('images/clap.png'),
                 Opacity(
-                  opacity: days < 2 ? 0.3 : 1.0,
+                  opacity: goal.days < 2 ? 0.3 : 1.0,
                   child: Image.asset('images/clap.png'),
                 ),
                 Opacity(
-                  opacity: days < 3 ? 0.3 : 1.0,
+                  opacity: goal.days < 3 ? 0.3 : 1.0,
                   child: Image.asset('images/clap.png'),
                 ),
               ],

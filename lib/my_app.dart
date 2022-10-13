@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:three_days/task/goal_add_page.dart';
-import 'package:three_days/task/goal_list_page.dart';
+import 'package:three_days/goal/goal_add_page.dart';
+import 'package:three_days/goal/goal_list_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -30,10 +30,10 @@ class MyApp extends StatelessWidget {
           ),
         )
       ),
-      initialRoute: '/task/list',
+      initialRoute: '/goal/list',
       routes: {
-        '/task/list': (context) => const GoalListPage(),
-        '/task/create': (context) => const GoalAddPage(),
+        '/goal/list': (context) => const GoalListPage(),
+        '/goal/add': (context) => const GoalAddPage(),
       },
     );
   }
