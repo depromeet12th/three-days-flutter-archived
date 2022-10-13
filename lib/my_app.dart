@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:three_days/task/task_create_page.dart';
-import 'package:three_days/task/task_list_page.dart';
+import 'package:three_days/task/goal_add_page.dart';
+import 'package:three_days/task/goal_list_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/task/list',
       routes: {
-        '/task/list': (context) => const TaskListPage(),
-        '/task/create': (context) => const TaskCreatePage(),
+        '/task/list': (context) => const GoalListPage(),
+        '/task/create': (context) => const GoalAddPage(),
       },
     );
   }

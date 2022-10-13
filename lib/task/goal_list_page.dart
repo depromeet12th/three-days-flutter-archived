@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:three_days/task/task.dart';
+import 'package:three_days/task/goal.dart';
 
-class TaskListPage extends StatelessWidget {
-  const TaskListPage({super.key});
+class GoalListPage extends StatelessWidget {
+  const GoalListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +14,11 @@ class TaskListPage extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: const [
-                Task(
+                Goal(
                   title: '이불 정리하기',
                   days: 1,
                 ),
-                Task(
+                Goal(
                   title: '일어나자마자 물 마시기',
                   days: 3,
                 ),

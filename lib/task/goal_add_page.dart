@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TaskCreatePage extends StatefulWidget {
-  const TaskCreatePage({super.key});
+class GoalAddPage extends StatefulWidget {
+  const GoalAddPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => _TaskCreatePageState();
+  State<StatefulWidget> createState() => _GoalAddPageState();
 }
 
-class _TaskCreatePageState extends State<TaskCreatePage> {
+class _GoalAddPageState extends State<GoalAddPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

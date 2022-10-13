@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Task extends StatelessWidget {
-  const Task({
+class Goal extends StatelessWidget {
+  const Goal({
     super.key,
     required this.title,
     required this.days,
