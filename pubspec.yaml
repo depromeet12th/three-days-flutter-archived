@@ -67,7 +67,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - .env
-    - images/clap.png
+    - images/clap_checked.png
+    - images/clap_unchecked.png
     - images/initial_clap.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
