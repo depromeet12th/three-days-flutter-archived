@@ -56,7 +56,38 @@ class GoalListPage extends StatelessWidget {
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _getTitleRowWidgets(context, goals),
+                      children: [
+                        const Text(
+                          '작심삼일에서\n작심삼백일까지 함께해요.',
+                          style: TextStyle(
+                            color: Color.fromRGBO(0x1A, 0x1F, 0x27, 1.0),
+                            fontSize: 22,
+                          ),
+                        ),
+                        const Spacer(),
+                        Visibility(
+                          maintainSize: true,
+                          maintainAnimation: true,
+                          maintainState: true,
+                          visible: goals.isNotEmpty,
+                          child: GestureDetector(
+                            onTapUp: (_) {
+                              Navigator.of(context).pushNamed('/goal/add');
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color:
+                                    const Color.fromRGBO(0xF0, 0xF0, 0xF0, 1.0),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(14.0),
+                                child: Icon(Icons.add),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -98,40 +129,6 @@ class GoalListPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<Widget> _getTitleRowWidgets(BuildContext context, List<Goal> goals) {
-    List<Widget> widgets = [
-      const Text(
-        '작심삼일에서\n작심삼백일까지 함께해요.',
-        style: TextStyle(
-          color: Color.fromRGBO(0x1A, 0x1F, 0x27, 1.0),
-          fontSize: 22,
-        ),
-      )
-    ];
-
-    if (goals.isNotEmpty) {
-      widgets.add(const Spacer());
-      widgets.add(
-        GestureDetector(
-          onTapUp: (_) {
-            Navigator.of(context).pushNamed('/goal/add');
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: const Color.fromRGBO(0xF0, 0xF0, 0xF0, 1.0),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(14.0),
-              child: Icon(Icons.add),
-            ),
-          ),
-        ),
-      );
-    }
-    return widgets;
   }
 
   Widget _getGoals(List<Goal> goals) {
