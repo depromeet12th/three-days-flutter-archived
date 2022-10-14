@@ -153,30 +153,64 @@ class _GoalWidgetState extends State<GoalWidget> {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: 200,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTapUp: (_) {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('삭제하기'),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text(
+                '수정하기',
+                style: TextStyle(
+                  fontSize: 14,
                 ),
-                GestureDetector(
-                  onTapUp: (_) {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('수정하기'),
-                ),
-              ],
+              ),
+              onTap: () {
+                Navigator.of(context).pop(GoalActionType.edit);
+              },
             ),
-          ),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text(
+                '삭제하기',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+              onTap: () {
+                // TODO: 정말 삭제하시겠어요?
+                Navigator.of(context).pop(GoalActionType.delete);
+              },
+            ),
+          ],
         );
       },
-    );
+    ).then((value) {
+      GoalActionType? result = value as GoalActionType?;
+      if (result == null) {
+        return;
+      }
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(
+                  Icons.check,
+                  color: Color.fromRGBO(0x00, 0xAE, 0x5A, 1.0),
+                ),
+                Text('짝심목표가 ${result == GoalActionType.edit ? '수정' : '삭제'}되었어요'),
+              ],
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+    });
   }
+}
+
+enum GoalActionType {
+  edit,
+  delete,
 }
