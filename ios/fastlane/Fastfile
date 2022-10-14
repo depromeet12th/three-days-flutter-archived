@@ -24,6 +24,7 @@ platform :ios do
       export_method: "development",
       output_directory: "./build/Runner"
     )
+    increment_build_number
     firebase_app_distribution(
       app: "1:526416542267:ios:638558ba14a415bd183a1e",
       groups_file: "./fastlane/firebase_app_distribution/groups.txt",
