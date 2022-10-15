@@ -1,5 +1,5 @@
 class Goal {
-  final int goalId;
+  int goalId;
   final String title;
   final int days;
 
@@ -10,7 +10,7 @@ class Goal {
   bool clapChecked;
 
   Goal({
-    required this.goalId,
+    this.goalId = 0,
     required this.title,
     required this.days,
     this.clapIndex = 0,
@@ -43,13 +43,16 @@ class Goal {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'goalId': goalId,
+    final map = {
       'title': title,
       'days': days,
       'clapIndex': clapIndex,
-      'clapChecked': clapChecked,
+      'clapChecked': clapChecked ? 1 : 0,
     };
+    if (goalId > 0) {
+      map['id'] = goalId;
+    }
+    return map;
   }
 
   static Goal fromJson(Map<String, dynamic> json) {
@@ -64,6 +67,6 @@ class Goal {
 
   @override
   String toString() {
-    return 'Goal{title: $title, days: $days, clapIndex: $clapIndex, clapChecked: $clapChecked}';
+    return 'Goal{goalId: $goalId, title: $title, days: $days, clapIndex: $clapIndex, clapChecked: $clapChecked}';
   }
 }

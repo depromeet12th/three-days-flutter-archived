@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:three_days/goal/goal.dart';
+import 'package:three_days/goal/goal_repository.dart';
 
 class GoalAddPage extends StatefulWidget {
-  const GoalAddPage({super.key});
+  GoalAddPage({super.key});
+
+  final GoalRepository goalRepository = GoalRepository();
 
   @override
   State<StatefulWidget> createState() => _GoalAddPageState();
@@ -10,6 +15,8 @@ class GoalAddPage extends StatefulWidget {
 class _GoalAddPageState extends State<GoalAddPage> {
   bool dateRangeEnabled = false;
   bool timeRangeEnabled = false;
+
+  final goalTextEditingController = TextEditingController();
 
   /// TODO: textField 현재글자수 표시, 글자수 제한
   @override
@@ -41,8 +48,15 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 bottom: 20.0,
               ),
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
+                onPressed: () async {
+                  final goal = await widget.goalRepository.save(
+                    Goal(
+                      title: goalTextEditingController.value.text,
+                      days: 1,
+                    ),
+                  );
+                  print('createdGoal: $goal');
+                  Navigator.of(context).pop(goal);
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
@@ -93,6 +107,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
               decoration: const InputDecoration(
                 hintText: '짝심목표를 알려주세요',
               ),
+              controller: goalTextEditingController,
             ),
             const SizedBox(height: 25),
 
@@ -163,7 +178,6 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 ],
               ),
             ),
-
 
             /// 수행시간
             Row(

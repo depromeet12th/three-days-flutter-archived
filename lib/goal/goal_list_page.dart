@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:three_days/goal/goal.dart';
 import 'package:three_days/goal/goal_repository.dart';
@@ -25,7 +26,13 @@ class _GoalListPageState extends State<GoalListPage> {
   }
 
   _asyncMethod() async {
-    goals.addAll(await widget.goalRepository.findAll());
+    final goalList = await widget.goalRepository.findAll();
+    setState(() {
+      goals.addAll(goalList);
+    });
+    if (kDebugMode) {
+      print('goals: $goals');
+    }
   }
 
   @override

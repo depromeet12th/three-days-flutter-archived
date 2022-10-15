@@ -29,7 +29,7 @@ class GoalRepository {
 
   Future<void> deleteById(int goalId) async {
     final db = await _getDatabase();
-    await db.delete('goal', where: 'goalId = $goalId');
+    await db.delete('goal', where: 'goalId = ?', whereArgs: [goalId]);
   }
 
   Future<Database> _getDatabase() async {
