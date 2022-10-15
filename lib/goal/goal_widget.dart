@@ -153,78 +153,80 @@ class _GoalWidgetState extends State<GoalWidget> {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text(
-                '수정하기',
-                style: TextStyle(
-                  fontSize: 14,
+        return SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text(
+                  '수정하기',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
+                onTap: () {
+                  Navigator.of(context).pop(GoalActionType.edit);
+                },
               ),
-              onTap: () {
-                Navigator.of(context).pop(GoalActionType.edit);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text(
-                '삭제하기',
-                style: TextStyle(
-                  fontSize: 14,
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text(
+                  '삭제하기',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-              onTap: () {
-                showDialog<DeleteActionType>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text(
-                      '정말 삭제하시겠어요?',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    content: const Text(
-                      '목표를 삭제하게되면\n히스토리까지 모두 삭제되며 복구되지 않아요',
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                    actions: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromRGBO(0xEF, 0xEF, 0xEF, 1.0),
+                onTap: () {
+                  showDialog<DeleteActionType>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text(
+                        '정말 삭제하시겠어요?',
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
-                        onPressed: () =>
-                            Navigator.of(context).pop(DeleteActionType.cancel),
-                        child: const Text(
-                          '그냥 둘게요',
-                          style: TextStyle(
-                            color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
+                      ),
+                      content: const Text(
+                        '목표를 삭제하게되면\n히스토리까지 모두 삭제되며 복구되지 않아요',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      actions: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromRGBO(0xEF, 0xEF, 0xEF, 1.0),
+                          ),
+                          onPressed: () =>
+                              Navigator.of(context).pop(DeleteActionType.cancel),
+                          child: const Text(
+                            '그냥 둘게요',
+                            style: TextStyle(
+                              color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
+                            ),
                           ),
                         ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () =>
-                            Navigator.of(context).pop(DeleteActionType.delete),
-                        child: const Text('삭제할게요'),
-                      ),
-                    ],
-                  ),
-                ).then((value) {
-                  if (value != null && value == DeleteActionType.delete) {
-                    Navigator.of(context).pop(GoalActionType.delete);
-                  } else {
-                    Navigator.of(context).pop();
-                  }
-                });
-              },
-            ),
-          ],
+                        ElevatedButton(
+                          onPressed: () =>
+                              Navigator.of(context).pop(DeleteActionType.delete),
+                          child: const Text('삭제할게요'),
+                        ),
+                      ],
+                    ),
+                  ).then((value) {
+                    if (value != null && value == DeleteActionType.delete) {
+                      Navigator.of(context).pop(GoalActionType.delete);
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                },
+              ),
+            ],
+          ),
         );
       },
     ).then((value) {
