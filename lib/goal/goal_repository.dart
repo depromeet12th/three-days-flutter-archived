@@ -27,6 +27,11 @@ class GoalRepository {
     await db.delete('goal');
   }
 
+  Future<void> deleteById(int goalId) async {
+    final db = await _getDatabase();
+    await db.delete('goal', where: 'goalId = $goalId');
+  }
+
   Future<Database> _getDatabase() async {
     return openDatabase(
       join(await getDatabasesPath(), 'three_days.db'),

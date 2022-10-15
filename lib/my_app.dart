@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/goal/list',
       routes: {
-        '/goal/list': (context) => const GoalListPage(),
+        '/goal/list': (context) => GoalListPage(),
         '/goal/add': (context) => const GoalAddPage(),
         '/statistics': (context) => const StatisticsPage(),
         '/mypage': (context) => const MypagePage(),

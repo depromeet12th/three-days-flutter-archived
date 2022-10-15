@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:three_days/goal/goal.dart';
-import 'package:three_days/goal/goal_repository.dart';
 import 'package:three_days/my_app.dart';
 
 void main() async {
