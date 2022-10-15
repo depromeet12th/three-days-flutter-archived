@@ -2,8 +2,10 @@ class Goal {
   final int goalId;
   final String title;
   final int days;
+
   /// 0,1,2 중에 오늘 몇번째 짝! 누를수 있는지
   int clapIndex;
+
   /// 오늘꺼 눌렀는지 아닌지
   bool clapChecked;
 
@@ -38,6 +40,26 @@ class Goal {
 
   void setUnchecked() {
     clapChecked = false;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'goalId': goalId,
+      'title': title,
+      'days': days,
+      'clapIndex': clapIndex,
+      'clapChecked': clapChecked,
+    };
+  }
+
+  static Goal fromJson(Map<String, dynamic> json) {
+    return Goal(
+      goalId: json['goalId'] as int,
+      title: json['title'] as String,
+      days: json['days'] as int,
+      clapIndex: json['clapIndex'] as int,
+      clapChecked: json['clapChecked'] == 1 ? true : false,
+    );
   }
 
   @override
