@@ -1,4 +1,5 @@
 class Goal {
+  final int goalId;
   final String title;
   final int days;
   /// 0,1,2 중에 오늘 몇번째 짝! 누를수 있는지
@@ -7,6 +8,7 @@ class Goal {
   bool clapChecked;
 
   Goal({
+    required this.goalId,
     required this.title,
     required this.days,
     this.clapIndex = 0,

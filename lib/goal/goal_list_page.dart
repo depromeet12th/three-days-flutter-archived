@@ -10,17 +10,22 @@ class GoalListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // final List<Goal> goals = [];
     final List<Goal> goals = [
-      Goal(title: '이불 정리하기', days: 1, clapIndex: 2, clapChecked: true),
+      Goal(goalId: 1,
+          title: '이불 정리하기',
+          days: 1, clapIndex: 2, clapChecked: true,),
       Goal(
+        goalId: 2,
         title: '일어나자마자 물 마시기',
         days: 3,
       ),
       Goal(
+        goalId: 3,
         title: '코딩테스트 1문제 풀기',
         days: 2,
         clapIndex: 1,
       ),
       Goal(
+        goalId: 4,
         title: '샐러드 먹기',
         days: 10,
       ),
