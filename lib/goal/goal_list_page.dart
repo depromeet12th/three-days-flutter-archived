@@ -1,31 +1,42 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:three_days/goal/goal.dart';
+import 'package:three_days/goal/goal_repository.dart';
 import 'package:three_days/goal/goal_widget.dart';
 import 'package:three_days/goal/initial_goal_widget.dart';
 
-class GoalListPage extends StatelessWidget {
-  const GoalListPage({super.key});
+class GoalListPage extends StatefulWidget {
+  GoalListPage({super.key});
+
+  final GoalRepository goalRepository = GoalRepository();
+
+  @override
+  State<StatefulWidget> createState() => _GoalListPageState();
+}
+
+class _GoalListPageState extends State<GoalListPage> {
+  late List<Goal> goals = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
+
+  _asyncMethod() async {
+    final goalList = await widget.goalRepository.findAll();
+    setState(() {
+      goals.addAll(goalList);
+    });
+    if (kDebugMode) {
+      print('goals: $goals');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // final List<Goal> goals = [];
-    final List<Goal> goals = [
-      Goal(title: '이불 정리하기', days: 1, clapIndex: 2, clapChecked: true),
-      Goal(
-        title: '일어나자마자 물 마시기',
-        days: 3,
-      ),
-      Goal(
-        title: '코딩테스트 1문제 풀기',
-        days: 2,
-        clapIndex: 1,
-      ),
-      Goal(
-        title: '샐러드 먹기',
-        days: 10,
-      ),
-    ];
-
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -139,11 +150,136 @@ class GoalListPage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: goals.length,
-        itemBuilder: (BuildContext context, int index) =>
-            GoalWidget(goal: goals[index]),
+        itemBuilder: (BuildContext context, int index) => GoalWidget(
+          goal: goals[index],
+          onKebabMenuPressed: _showModalBottomSheet,
+        ),
         separatorBuilder: (BuildContext context, int index) =>
             const SizedBox(height: 10),
       );
     }
   }
+
+  /// goal_widget 에서 호출하는 콜백 메서드.
+  /// 업데이트 / 삭제하고나서 목록을 갱신하기 위해 사용함
+  void _showModalBottomSheet(BuildContext context, Goal goal) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text(
+                  '수정하기',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop(GoalActionType.edit);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text(
+                  '삭제하기',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                onTap: () {
+                  showDialog<DeleteActionType>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text(
+                        '정말 삭제하시겠어요?',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      content: const Text(
+                        '목표를 삭제하게되면\n히스토리까지 모두 삭제되며 복구되지 않아요',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      actions: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromRGBO(0xEF, 0xEF, 0xEF, 1.0),
+                          ),
+                          onPressed: () => Navigator.of(context)
+                              .pop(DeleteActionType.cancel),
+                          child: const Text(
+                            '그냥 둘게요',
+                            style: TextStyle(
+                              color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => Navigator.of(context)
+                              .pop(DeleteActionType.delete),
+                          child: const Text('삭제할게요'),
+                        ),
+                      ],
+                    ),
+                  ).then((value) {
+                    if (value != null && value == DeleteActionType.delete) {
+                      widget.goalRepository.deleteById(goal.goalId);
+                      Navigator.of(context).pop(GoalActionType.delete);
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    ).then((value) {
+      GoalActionType? result = value as GoalActionType?;
+      if (result == null) {
+        return;
+      }
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(
+                  Icons.check,
+                  color: Color.fromRGBO(0x00, 0xAE, 0x5A, 1.0),
+                ),
+                Text(
+                    '짝심목표가 ${result == GoalActionType.edit ? '수정' : '삭제'}되었어요'),
+              ],
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      if (result == GoalActionType.delete) {
+        setState(() {
+          goals.remove(goal);
+        });
+      }
+    });
+  }
+}
+
+enum GoalActionType {
+  edit,
+  delete,
+}
+
+enum DeleteActionType {
+  delete,
+  cancel,
 }

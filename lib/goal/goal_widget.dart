@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:three_days/goal/goal.dart';
+import 'package:three_days/goal/goal_repository.dart';
 
 class GoalWidget extends StatefulWidget {
-  const GoalWidget({
+  GoalWidget({
     super.key,
     required this.goal,
+    required this.onKebabMenuPressed,
   });
 
   final Goal goal;
+  final GoalRepository goalRepository = GoalRepository();
+  final void Function(BuildContext context, Goal goal) onKebabMenuPressed;
 
   @override
   State<StatefulWidget> createState() {
@@ -61,7 +65,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                     alignment: Alignment.centerRight,
                     child: IconButton(
                       onPressed: () {
-                        _showModalBottomSheet(context);
+                        widget.onKebabMenuPressed.call(context, widget.goal);
                       },
                       icon: const Icon(
                         Icons.more_vert,
@@ -131,7 +135,7 @@ class _GoalWidgetState extends State<GoalWidget> {
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: backgroundColor,
-            // XXX: 테두리가 안쪽으로 그려지지 않아서 선택되지 않은 항목은 배경색이랑 같은 테두리를 그림
+            /// XXX: 테두리가 안쪽으로 그려지지 않아서 선택되지 않은 항목은 배경색이랑 같은 테두리를 그림
             border: Border.all(
               color: focused
                   ? const Color.fromRGBO(0x74, 0xA3, 0xFF, 1.0)
@@ -148,117 +152,4 @@ class _GoalWidgetState extends State<GoalWidget> {
       ),
     );
   }
-
-  void _showModalBottomSheet(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text(
-                '수정하기',
-                style: TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-              onTap: () {
-                Navigator.of(context).pop(GoalActionType.edit);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text(
-                '삭제하기',
-                style: TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-              onTap: () {
-                showDialog<DeleteActionType>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text(
-                      '정말 삭제하시겠어요?',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    content: const Text(
-                      '목표를 삭제하게되면\n히스토리까지 모두 삭제되며 복구되지 않아요',
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                    actions: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromRGBO(0xEF, 0xEF, 0xEF, 1.0),
-                        ),
-                        onPressed: () =>
-                            Navigator.of(context).pop(DeleteActionType.cancel),
-                        child: const Text(
-                          '그냥 둘게요',
-                          style: TextStyle(
-                            color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () =>
-                            Navigator.of(context).pop(DeleteActionType.delete),
-                        child: const Text('삭제할게요'),
-                      ),
-                    ],
-                  ),
-                ).then((value) {
-                  if (value != null && value == DeleteActionType.delete) {
-                    Navigator.of(context).pop(GoalActionType.delete);
-                  } else {
-                    Navigator.of(context).pop();
-                  }
-                });
-              },
-            ),
-          ],
-        );
-      },
-    ).then((value) {
-      GoalActionType? result = value as GoalActionType?;
-      if (result == null) {
-        return;
-      }
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(
-                  Icons.check,
-                  color: Color.fromRGBO(0x00, 0xAE, 0x5A, 1.0),
-                ),
-                Text(
-                    '짝심목표가 ${result == GoalActionType.edit ? '수정' : '삭제'}되었어요'),
-              ],
-            ),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-    });
-  }
-}
-
-enum GoalActionType {
-  edit,
-  delete,
-}
-
-enum DeleteActionType {
-  delete,
-  cancel,
 }
