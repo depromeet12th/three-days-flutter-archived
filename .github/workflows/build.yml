@@ -14,6 +14,14 @@ jobs:
         with:
           channel: 'stable'
           architecture: x64
+      - name: Fetch env file from secrets
+        id: fetch_env_file
+        uses: timheuer/base64-to-file@v1
+        with:
+          encodedString: ${{ secrets.ENV_FILE }}
+          fileName: '.env'
+      - name: Move credential file to repository location
+        run: mv ${{ steps.fetch_env_file.outputs.filePath }} /home/runner/work/three-days-flutter/three-days-flutter/
       - run: flutter pub get
       - run: flutter test
       - run: flutter build ios --release --no-codesign
