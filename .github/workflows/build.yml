@@ -21,7 +21,7 @@ jobs:
           encodedString: ${{ secrets.ENV_FILE }}
           fileName: '.env'
       - name: Move credential file to repository location
-        run: mv ${{ steps.fetch_env_file.outputs.filePath }} /home/runner/work/three-days-flutter/three-days-flutter/
+        run: mv ${{ steps.fetch_env_file.outputs.filePath }} /Users/runner/work/three-days-flutter/three-days-flutter/
       - run: flutter pub get
       - run: flutter test
       - run: flutter build ios --release --no-codesign
