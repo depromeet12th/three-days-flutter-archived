@@ -113,15 +113,21 @@ class _GoalListPageState extends State<GoalListPage> {
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: ImageIcon(
+                AssetImage('images/icon_home.png'),
+              ),
               label: '홈',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.table_chart_rounded),
+              icon: ImageIcon(
+                AssetImage('images/icon_statistics.png'),
+              ),
               label: '통계',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: ImageIcon(
+                AssetImage('images/icon_mypage.png'),
+              ),
               label: '마이페이지',
             ),
           ],
