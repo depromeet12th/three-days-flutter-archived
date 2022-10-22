@@ -97,3 +97,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Suit
+      fonts:
+        - asset: fonts/SUIT-Bold.otf
+        - asset: fonts/SUIT-ExtraBold.otf
+        - asset: fonts/SUIT-ExtraLight.otf
+        - asset: fonts/SUIT-Heavy.otf
+        - asset: fonts/SUIT-Light.otf
+        - asset: fonts/SUIT-Medium.otf
+        - asset: fonts/SUIT-Regular.otf
+        - asset: fonts/SUIT-SemiBold.otf
+        - asset: fonts/SUIT-Thin.otf

@@ -30,7 +30,8 @@ class MyApp extends StatelessWidget {
           titleTextStyle: TextStyle(
             color: Color.fromRGBO(0x1A, 0x1F, 27, 1.0),
           ),
-        )
+        ),
+        fontFamily: 'Suit',
       ),
       initialRoute: '/goal/list',
       routes: {
