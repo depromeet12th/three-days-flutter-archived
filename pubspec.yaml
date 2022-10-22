@@ -72,6 +72,9 @@ flutter:
     - images/clap_checked.png
     - images/clap_unchecked.png
     - images/initial_clap.png
+    - images/icon_home.svg
+    - images/icon_mypage.svg
+    - images/icon_statistics.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
