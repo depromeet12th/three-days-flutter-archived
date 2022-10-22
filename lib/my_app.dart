@@ -28,11 +28,32 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Suit',
       ),
       initialRoute: '/goal/list',
-      routes: {
-        '/goal/list': (context) => GoalListPage(),
-        '/goal/add': (context) => GoalAddPage(),
-        '/statistics': (context) => const StatisticsPage(),
-        '/mypage': (context) => const MypagePage(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/goal/list') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => GoalListPage(),
+          );
+        }
+        if (settings.name == '/goal/add') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => GoalAddPage(),
+          );
+        }
+        if (settings.name == '/statistics') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => const StatisticsPage(),
+          );
+        }
+        if (settings.name == '/mypage') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => const MypagePage(),
+          );
+        }
+        return MaterialPageRoute(builder: (_) => GoalListPage());
       },
     );
   }
