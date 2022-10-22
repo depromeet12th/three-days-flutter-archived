@@ -1,1 +1,2 @@
-홈페이지에서 UDID 추가함
+- 8팀 iOS 기기 추가 등록 및 빌드
+- provisioning profile 갱신
