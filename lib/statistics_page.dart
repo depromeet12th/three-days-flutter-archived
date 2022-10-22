@@ -8,7 +8,7 @@ class StatisticsPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: const Center(
-          child: Text('Statictics Page'),
+          child: Text('Statistics Page'),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
