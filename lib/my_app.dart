@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:three_days/design/three_days_colors.dart';
+import 'package:three_days/goal/goal.dart';
 import 'package:three_days/goal/goal_add_page.dart';
+import 'package:three_days/goal/goal_edit_page.dart';
 import 'package:three_days/goal/goal_list_page.dart';
 import 'package:three_days/mypage_page.dart';
 import 'package:three_days/statistics_page.dart';
@@ -47,6 +49,13 @@ class MyApp extends StatelessWidget {
           return PageRouteBuilder(
             settings: settings,
             pageBuilder: (_, __, ___) => GoalAddPage(),
+          );
+        }
+        if (settings.name == '/goal/edit') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) =>
+                GoalEditPage(goal: settings.arguments as Goal),
           );
         }
         if (settings.name == '/statistics') {

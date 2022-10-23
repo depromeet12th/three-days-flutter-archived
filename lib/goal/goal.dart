@@ -1,6 +1,6 @@
 class Goal {
   int goalId;
-  final String title;
+  String title;
   final int days;
 
   /// 0,1,2 중에 오늘 몇번째 짝! 누를수 있는지
@@ -50,7 +50,7 @@ class Goal {
       'clapChecked': clapChecked ? 1 : 0,
     };
     if (goalId > 0) {
-      map['id'] = goalId;
+      map['goalId'] = goalId;
     }
     return map;
   }
@@ -68,5 +68,11 @@ class Goal {
   @override
   String toString() {
     return 'Goal{goalId: $goalId, title: $title, days: $days, clapIndex: $clapIndex, clapChecked: $clapChecked}';
+  }
+
+  void update({
+    required String title,
+  }) {
+    this.title = title;
   }
 }
