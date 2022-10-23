@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:three_days/goal/form/time_selector_widget.dart';
 import 'package:three_days/goal/goal.dart';
 import 'package:three_days/goal/goal_repository.dart';
 
@@ -18,7 +19,8 @@ class _GoalAddPageState extends State<GoalAddPage> {
   bool timeRangeEnabled = false;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
-  TimeOfDay? timeOfDay;
+  TimeOfDay? remindTime;
+  TimeOfDay? notificationTime;
 
   final goalTextEditingController = TextEditingController();
 
@@ -209,41 +211,21 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 ),
               ],
             ),
-            Visibility(
+            TimeSelectorWidget(
               visible: timeRangeEnabled,
-              child: TapRegion(
-                onTapInside: (event) async {
-                  var pickedTime = await showTimePicker(
-                    context: context,
-                    initialTime: const TimeOfDay(hour: 8, minute: 0),
-                  );
-                  setState(() {
-                    timeOfDay = pickedTime;
-                    if (kDebugMode) {
-                      print(timeOfDay);
-                    }
-                  });
-                },
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: const Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                    child: Text(
-                      timeOfDay?.let((it) => _getFormattedTime(it)) ?? '시간을 선택해주세요',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: timeOfDay != null
-                            ? const Color.fromRGBO(0x75, 0x75, 0x75, 1.0)
-                            : const Color.fromRGBO(0xC5, 0xC5, 0xC5, 1.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              onTabInside: (event) async {
+                var pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: const TimeOfDay(hour: 8, minute: 0),
+                );
+                setState(() {
+                  remindTime = pickedTime;
+                  if (kDebugMode) {
+                    print(remindTime);
+                  }
+                });
+              },
+              timeOfDay: remindTime,
             ),
             const SizedBox(height: 25),
 
@@ -254,10 +236,22 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 fontSize: 15,
               ),
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: '시간을 선택해주세요',
-              ),
+            const SizedBox(height: 5,),
+            TimeSelectorWidget(
+              visible: true,
+              onTabInside: (event) async {
+                var pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: const TimeOfDay(hour: 8, minute: 0),
+                );
+                setState(() {
+                  notificationTime = pickedTime;
+                  if (kDebugMode) {
+                    print(notificationTime);
+                  }
+                });
+              },
+              timeOfDay: notificationTime,
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -273,15 +267,4 @@ class _GoalAddPageState extends State<GoalAddPage> {
   String _getFormattedDate(DateTime dateTime) {
     return DateFormat('yyyy. MM. dd.').format(dateTime);
   }
-
-  String _getFormattedTime(TimeOfDay timeOfDay) {
-    final now = DateTime.now();
-    final dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
-    return DateFormat('aa H시 mm분').format(dateTime);
-  }
-}
-
-/// kotlin let for dart
-extension ObjectExt<T> on T {
-  R let<R>(R Function(T that) op) => op(this);
 }
