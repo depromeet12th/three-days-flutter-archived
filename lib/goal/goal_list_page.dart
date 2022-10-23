@@ -192,7 +192,11 @@ class _GoalListPageState extends State<GoalListPage> {
                     fontSize: 14,
                   ),
                 ),
-                onTap: () {
+                onTap: () async {
+                  await Navigator.of(context).pushNamed(
+                    '/goal/edit',
+                    arguments: goal,
+                  );
                   Navigator.of(context).pop(GoalActionType.edit);
                 },
               ),
@@ -288,6 +292,7 @@ class _GoalListPageState extends State<GoalListPage> {
 }
 
 enum GoalActionType {
+  add,
   edit,
   delete,
 }
