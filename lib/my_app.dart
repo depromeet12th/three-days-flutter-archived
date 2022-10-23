@@ -23,7 +23,13 @@ class MyApp extends StatelessWidget {
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: Color.fromRGBO(0x1A, 0x1F, 27, 1.0),
+          selectedLabelStyle: TextStyle(
+            fontSize: 11,
+          ),
           unselectedItemColor: Color.fromRGBO(0xB0, 0xB8, 0xC1, 1.0),
+          unselectedLabelStyle: TextStyle(
+            fontSize: 11,
+          ),
         ),
         fontFamily: 'Suit',
       ),
