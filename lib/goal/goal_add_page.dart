@@ -18,6 +18,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
   bool timeRangeEnabled = false;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
+  TimeOfDay? timeOfDay;
 
   final goalTextEditingController = TextEditingController();
 
@@ -42,7 +43,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
               height: 7,
             ),
             Expanded(
-              child: _getFormWidgets(),
+              child: _getFormWidgets(context),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -62,8 +63,8 @@ class _GoalAddPageState extends State<GoalAddPage> {
                     print('createdGoal: $goal');
                   }
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/goal/list',
-                      (route) => route.settings.name == '/goal/list',
+                    '/goal/list',
+                    (route) => route.settings.name == '/goal/list',
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -84,7 +85,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
     );
   }
 
-  Widget _getFormWidgets() {
+  Widget _getFormWidgets(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 20.0,
@@ -210,9 +211,37 @@ class _GoalAddPageState extends State<GoalAddPage> {
             ),
             Visibility(
               visible: timeRangeEnabled,
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  hintText: '시간을 선택해주세요',
+              child: TapRegion(
+                onTapInside: (event) async {
+                  var pickedTime = await showTimePicker(
+                    context: context,
+                    initialTime: const TimeOfDay(hour: 8, minute: 0),
+                  );
+                  setState(() {
+                    timeOfDay = pickedTime;
+                    if (kDebugMode) {
+                      print(timeOfDay);
+                    }
+                  });
+                },
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: const Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    child: Text(
+                      timeOfDay?.let((it) => _getFormattedTime(it)) ?? '시간을 선택해주세요',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: timeOfDay != null
+                            ? const Color.fromRGBO(0x75, 0x75, 0x75, 1.0)
+                            : const Color.fromRGBO(0xC5, 0xC5, 0xC5, 1.0),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -244,4 +273,15 @@ class _GoalAddPageState extends State<GoalAddPage> {
   String _getFormattedDate(DateTime dateTime) {
     return DateFormat('yyyy. MM. dd.').format(dateTime);
   }
+
+  String _getFormattedTime(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    final dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    return DateFormat('aa H시 mm분').format(dateTime);
+  }
+}
+
+/// kotlin let for dart
+extension ObjectExt<T> on T {
+  R let<R>(R Function(T that) op) => op(this);
 }
