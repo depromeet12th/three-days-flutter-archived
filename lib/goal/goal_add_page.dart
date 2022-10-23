@@ -61,7 +61,10 @@ class _GoalAddPageState extends State<GoalAddPage> {
                   if (kDebugMode) {
                     print('createdGoal: $goal');
                   }
-                  Navigator.of(context).pop(goal);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/goal/list',
+                      (route) => route.settings.name == '/goal/list',
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
