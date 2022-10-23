@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:three_days/goal/goal.dart';
 import 'package:three_days/goal/goal_repository.dart';
 
@@ -15,6 +16,8 @@ class GoalAddPage extends StatefulWidget {
 class _GoalAddPageState extends State<GoalAddPage> {
   bool dateRangeEnabled = false;
   bool timeRangeEnabled = false;
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now();
 
   final goalTextEditingController = TextEditingController();
 
@@ -55,12 +58,15 @@ class _GoalAddPageState extends State<GoalAddPage> {
                       days: 1,
                     ),
                   );
-                  print('createdGoal: $goal');
+                  if (kDebugMode) {
+                    print('createdGoal: $goal');
+                  }
                   Navigator.of(context).pop(goal);
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
                 ),
+                // TODO: form 입력 상태 따라서 enabled 제어
                 child: const Text(
                   '목표 만들기',
                   style: TextStyle(
@@ -141,16 +147,16 @@ class _GoalAddPageState extends State<GoalAddPage> {
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(10.0),
                       ),
-                      color: Color.fromRGBO(0xF9, 0xFa, 0xFB, 1.0),
+                      color: Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
                     ),
                     height: 45,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Row(
-                        children: const [
-                          Text('시작'),
-                          Spacer(),
-                          Text('2022. 10. 13.'),
+                        children: [
+                          const Text('시작'),
+                          const Spacer(),
+                          Text(_getFormattedDate(startDate)),
                         ],
                       ),
                     ),
@@ -166,10 +172,10 @@ class _GoalAddPageState extends State<GoalAddPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Row(
-                        children: const [
-                          Text('종료'),
-                          Spacer(),
-                          Text('2022. 10. 13.'),
+                        children: [
+                          const Text('종료'),
+                          const Spacer(),
+                          Text(_getFormattedDate(endDate)),
                         ],
                       ),
                     ),
@@ -230,5 +236,9 @@ class _GoalAddPageState extends State<GoalAddPage> {
         ),
       ),
     );
+  }
+
+  String _getFormattedDate(DateTime dateTime) {
+    return DateFormat('yyyy. MM. dd.').format(dateTime);
   }
 }
