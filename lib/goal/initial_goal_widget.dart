@@ -20,7 +20,6 @@ class InitialGoal extends StatelessWidget {
               const Text(
                 '짝심삼일 시작해보실래요?',
                 style: TextStyle(
-                  color: Color.fromRGBO(0x1A, 0x1F, 0x27, 1.0),
                   fontSize: 17,
                 ),
               ),

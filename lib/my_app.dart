@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/goal/goal_add_page.dart';
 import 'package:three_days/goal/goal_list_page.dart';
 import 'package:three_days/mypage_page.dart';
@@ -18,12 +19,12 @@ class MyApp extends StatelessWidget {
           elevation: 0.0,
           backgroundColor: Colors.white,
           titleTextStyle: TextStyle(
-            color: Color.fromRGBO(0x1A, 0x1F, 27, 1.0),
+            color: ThreeDaysColors.textBlack,
           ),
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.white,
-          selectedItemColor: Color.fromRGBO(0x1A, 0x1F, 27, 1.0),
+          selectedItemColor: ThreeDaysColors.textBlack,
           selectedLabelStyle: TextStyle(
             fontSize: 11,
           ),

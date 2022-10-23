@@ -79,7 +79,6 @@ class _GoalWidgetState extends State<GoalWidget> {
             Text(
               widget.goal.title,
               style: const TextStyle(
-                color: Color.fromRGBO(0x1A, 0x1F, 0x27, 1.0),
                 fontSize: 16,
               ),
             ),
