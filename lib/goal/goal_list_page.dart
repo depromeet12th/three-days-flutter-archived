@@ -150,20 +150,23 @@ class _GoalListPageState extends State<GoalListPage> {
 
   Widget _getGoals(List<Goal> goals) {
     if (goals.isEmpty) {
-      return const InitialGoal();
-    } else {
-      return ListView.separated(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: goals.length,
-        itemBuilder: (BuildContext context, int index) => GoalWidget(
-          goal: goals[index],
-          onKebabMenuPressed: _showModalBottomSheet,
-        ),
-        separatorBuilder: (BuildContext context, int index) =>
-            const SizedBox(height: 10),
+      return Column(
+        children: const [
+          InitialGoal(),
+        ],
       );
     }
+    return ListView.separated(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: goals.length,
+      itemBuilder: (BuildContext context, int index) => GoalWidget(
+        goal: goals[index],
+        onKebabMenuPressed: _showModalBottomSheet,
+      ),
+      separatorBuilder: (BuildContext context, int index) =>
+          const SizedBox(height: 10),
+    );
   }
 
   /// goal_widget 에서 호출하는 콜백 메서드.
