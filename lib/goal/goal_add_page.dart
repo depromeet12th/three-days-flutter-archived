@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:three_days/goal/form/time_selector_widget.dart';
 import 'package:three_days/goal/goal.dart';
 import 'package:three_days/goal/goal_repository.dart';
 
@@ -15,6 +17,10 @@ class GoalAddPage extends StatefulWidget {
 class _GoalAddPageState extends State<GoalAddPage> {
   bool dateRangeEnabled = false;
   bool timeRangeEnabled = false;
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now();
+  TimeOfDay? remindTime;
+  TimeOfDay? notificationTime;
 
   final goalTextEditingController = TextEditingController();
 
@@ -39,7 +45,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
               height: 7,
             ),
             Expanded(
-              child: _getFormWidgets(),
+              child: _getFormWidgets(context),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -55,12 +61,18 @@ class _GoalAddPageState extends State<GoalAddPage> {
                       days: 1,
                     ),
                   );
-                  print('createdGoal: $goal');
-                  Navigator.of(context).pop(goal);
+                  if (kDebugMode) {
+                    print('createdGoal: $goal');
+                  }
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/goal/list',
+                    (route) => route.settings.name == '/goal/list',
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
                 ),
+                // TODO: form 입력 상태 따라서 enabled 제어
                 child: const Text(
                   '목표 만들기',
                   style: TextStyle(
@@ -75,7 +87,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
     );
   }
 
-  Widget _getFormWidgets() {
+  Widget _getFormWidgets(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 20.0,
@@ -141,16 +153,16 @@ class _GoalAddPageState extends State<GoalAddPage> {
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(10.0),
                       ),
-                      color: Color.fromRGBO(0xF9, 0xFa, 0xFB, 1.0),
+                      color: Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
                     ),
                     height: 45,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Row(
-                        children: const [
-                          Text('시작'),
-                          Spacer(),
-                          Text('2022. 10. 13.'),
+                        children: [
+                          const Text('시작'),
+                          const Spacer(),
+                          Text(_getFormattedDate(startDate)),
                         ],
                       ),
                     ),
@@ -166,10 +178,10 @@ class _GoalAddPageState extends State<GoalAddPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Row(
-                        children: const [
-                          Text('종료'),
-                          Spacer(),
-                          Text('2022. 10. 13.'),
+                        children: [
+                          const Text('종료'),
+                          const Spacer(),
+                          Text(_getFormattedDate(endDate)),
                         ],
                       ),
                     ),
@@ -199,13 +211,21 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 ),
               ],
             ),
-            Visibility(
+            TimeSelectorWidget(
               visible: timeRangeEnabled,
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  hintText: '시간을 선택해주세요',
-                ),
-              ),
+              onTabInside: (event) async {
+                var pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: const TimeOfDay(hour: 8, minute: 0),
+                );
+                setState(() {
+                  remindTime = pickedTime;
+                  if (kDebugMode) {
+                    print(remindTime);
+                  }
+                });
+              },
+              timeOfDay: remindTime,
             ),
             const SizedBox(height: 25),
 
@@ -216,10 +236,22 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 fontSize: 15,
               ),
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: '시간을 선택해주세요',
-              ),
+            const SizedBox(height: 5,),
+            TimeSelectorWidget(
+              visible: true,
+              onTabInside: (event) async {
+                var pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: const TimeOfDay(hour: 8, minute: 0),
+                );
+                setState(() {
+                  notificationTime = pickedTime;
+                  if (kDebugMode) {
+                    print(notificationTime);
+                  }
+                });
+              },
+              timeOfDay: notificationTime,
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -230,5 +262,9 @@ class _GoalAddPageState extends State<GoalAddPage> {
         ),
       ),
     );
+  }
+
+  String _getFormattedDate(DateTime dateTime) {
+    return DateFormat('yyyy. MM. dd.').format(dateTime);
   }
 }

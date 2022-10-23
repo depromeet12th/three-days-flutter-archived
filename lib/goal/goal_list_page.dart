@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:three_days/goal/goal.dart';
 import 'package:three_days/goal/goal_repository.dart';
 import 'package:three_days/goal/goal_widget.dart';
@@ -53,11 +54,9 @@ class _GoalListPageState extends State<GoalListPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // TODO: 현재 날짜
-                    // TODO: Formatting
-                    const Text(
-                      '10.13 (목)',
-                      style: TextStyle(
+                    Text(
+                      _getFormattedDate(),
+                      style: const TextStyle(
                         color: Color.fromRGBO(0x8F, 0x8F, 0x8F, 1.0),
                         fontSize: 14,
                       ),
@@ -71,7 +70,6 @@ class _GoalListPageState extends State<GoalListPage> {
                         const Text(
                           '작심삼일에서\n작심삼백일까지 함께해요.',
                           style: TextStyle(
-                            color: Color.fromRGBO(0x1A, 0x1F, 0x27, 1.0),
                             fontSize: 22,
                           ),
                         ),
@@ -167,6 +165,12 @@ class _GoalListPageState extends State<GoalListPage> {
       separatorBuilder: (BuildContext context, int index) =>
           const SizedBox(height: 10),
     );
+  }
+
+  String _getFormattedDate() {
+    /// TODO: current locale
+    final formatted = DateFormat('MM. dd. (E)').format(DateTime.now());
+    return formatted;
   }
 
   /// goal_widget 에서 호출하는 콜백 메서드.
