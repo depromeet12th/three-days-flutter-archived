@@ -7,21 +7,11 @@ import 'package:three_days/statistics_page.dart';
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
@@ -31,14 +21,46 @@ class MyApp extends StatelessWidget {
             color: Color.fromRGBO(0x1A, 0x1F, 27, 1.0),
           ),
         ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: Color.fromRGBO(0x1A, 0x1F, 27, 1.0),
+          selectedLabelStyle: TextStyle(
+            fontSize: 11,
+          ),
+          unselectedItemColor: Color.fromRGBO(0xB0, 0xB8, 0xC1, 1.0),
+          unselectedLabelStyle: TextStyle(
+            fontSize: 11,
+          ),
+        ),
         fontFamily: 'Suit',
       ),
       initialRoute: '/goal/list',
-      routes: {
-        '/goal/list': (context) => GoalListPage(),
-        '/goal/add': (context) => GoalAddPage(),
-        '/statistics': (context) => const StatisticsPage(),
-        '/mypage': (context) => const MypagePage(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/goal/list') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => GoalListPage(),
+          );
+        }
+        if (settings.name == '/goal/add') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => GoalAddPage(),
+          );
+        }
+        if (settings.name == '/statistics') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => const StatisticsPage(),
+          );
+        }
+        if (settings.name == '/mypage') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => const MypagePage(),
+          );
+        }
+        return MaterialPageRoute(builder: (_) => GoalListPage());
       },
     );
   }
