@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:three_days/domain/goal/clap/clap_repository.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/domain/goal/history/goal_history_repository.dart';
 import 'package:three_days/ui/goal/goal_widget.dart';
 import 'package:three_days/ui/goal/initial_goal_widget.dart';
 
@@ -10,6 +12,8 @@ class GoalListPage extends StatefulWidget {
   GoalListPage({super.key});
 
   final GoalRepository goalRepository = GoalRepository();
+  final GoalHistoryRepository goalHistoryRepository = GoalHistoryRepository();
+  final ClapRepository clapRepository = ClapRepository();
 
   @override
   State<StatefulWidget> createState() => _GoalListPageState();
@@ -31,8 +35,11 @@ class _GoalListPageState extends State<GoalListPage> {
     setState(() {
       goals.addAll(goalList);
     });
+
     if (kDebugMode) {
       print('goals: $goals');
+      print('goalHistories: ${await widget.goalHistoryRepository.findAll()}');
+      print('claps: ${await widget.clapRepository.findAll()}');
     }
   }
 

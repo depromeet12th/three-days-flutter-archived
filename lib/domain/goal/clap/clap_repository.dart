@@ -6,6 +6,13 @@ class ClapRepository {
   static const dbFileName = 'three_days.db';
   static const clapTableName = 'clap';
 
+  Future<List<Clap>> findAll() async {
+    final db = await _getDatabase();
+    return db.query(
+      clapTableName,
+    ).then((value) => value.map((e) => Clap.fromJson(e)).toList());
+  }
+
   Future<List<Clap>> findByGoalId(int goalId) async {
     final db = await _getDatabase();
     return db.query(

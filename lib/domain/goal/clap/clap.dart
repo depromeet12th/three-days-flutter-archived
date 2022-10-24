@@ -46,4 +46,9 @@ class Clap {
   DateTime getCreatedDate() {
     return DateTime(_createdAt!.year, _createdAt!.month, _createdAt!.day);
   }
+
+  @override
+  String toString() {
+    return 'Clap{clapId: $clapId, goalId: $goalId, goalHistoryId: $goalHistoryId, _createdAt: $_createdAt}';
+  }
 }

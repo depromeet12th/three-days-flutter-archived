@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/domain/goal/goal_service.dart';
 
 class GoalWidget extends StatefulWidget {
   GoalWidget({
@@ -11,6 +12,7 @@ class GoalWidget extends StatefulWidget {
 
   final Goal goal;
   final GoalRepository goalRepository = GoalRepository();
+  final GoalService goalService = GoalService();
   final void Function(BuildContext context, Goal goal) onKebabMenuPressed;
 
   @override
@@ -125,8 +127,10 @@ class _GoalWidgetState extends State<GoalWidget> {
         setState(() {
           if (widget.goal.clapChecked) {
             widget.goal.setUnchecked();
+            widget.goalService.uncheck(widget.goal);
           } else {
             widget.goal.setChecked();
+            widget.goalService.check(widget.goal);
           }
         });
       },

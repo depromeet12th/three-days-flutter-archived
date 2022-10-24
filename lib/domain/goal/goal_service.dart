@@ -68,7 +68,7 @@ class GoalService {
   }
 
   /// 오늘 할 일 완료
-  Future<Clap?> complete(Goal goal) async {
+  Future<Clap?> check(Goal goal) async {
     // goal 변경 및 저장
     goal.setChecked();
     await _goalRepository.save(goal);
@@ -99,7 +99,7 @@ class GoalService {
   }
 
   /// 오늘 한 일 취소
-  Future<void> cancel(Goal goal) async {
+  Future<void> uncheck(Goal goal) async {
     // goal 변경 및 저장
     goal.setUnchecked();
     _goalRepository.save(goal);
