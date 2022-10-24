@@ -36,7 +36,9 @@ void main() async {
     onCreate: (db, version) {
       // Run the CREATE TABLE statement on the database.
       return db.execute(
-        'CREATE TABLE goal(goalId INTEGER PRIMARY KEY NOT NULL, title TEXT, days INTEGER, clapIndex INTEGER, clapChecked INTEGER)',
+        '''CREATE TABLE goal(goalId INTEGER PRIMARY KEY NOT NULL, title TEXT, days INTEGER, clapIndex INTEGER, clapChecked INTEGER);
+        CREATE TABLE goal_history(goalHistoryId INTEGER PRIMARY KEY NOT NULL, goalId INTEGER, checkedAt TEXT);
+        CREATE TABLE clap(clapId INTEGER PRIMARY KEY NOT NULL, goalId INTEGER, goalHistoryId INTEGER, createdAt TEXT);''',
       );
     },
     // Set the version. This executes the onCreate function and provides a
