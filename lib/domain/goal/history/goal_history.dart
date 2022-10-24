@@ -21,14 +21,14 @@ class GoalHistory {
     return GoalHistory(
       goalHistoryId: json['goalHistoryId'] as int,
       goalId: json['goalId'] as int,
-      checkedAt: json['checkedAt'],
+      checkedAt: DateTime.parse(json['checkedAt'] as String),
     );
   }
 
   Map<String, dynamic> toMap() {
     final map = {
       'goalId': goalId,
-      'checkedAt': _checkedAt,
+      'checkedAt': _checkedAt!.toIso8601String(),
     };
     if (goalHistoryId > 0) {
       map['goalHistoryId'] = goalHistoryId;

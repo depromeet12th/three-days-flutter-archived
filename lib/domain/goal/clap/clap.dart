@@ -27,7 +27,7 @@ class Clap {
       clapId: json['clapId'] as int,
       goalId: json['goalId'] as int,
       goalHistoryId: json['goalHistoryId'] as int,
-      createdAt: json['createdAt'] as DateTime,
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
 
@@ -35,7 +35,7 @@ class Clap {
     final map = {
       'goalId': goalId,
       'goalHistoryId': goalHistoryId,
-      'createdAt': _createdAt,
+      'createdAt': _createdAt!.toIso8601String(),
     };
     if (clapId > 0) {
       map['clapId'] = clapId;
