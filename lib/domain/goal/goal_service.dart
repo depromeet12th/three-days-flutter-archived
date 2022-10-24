@@ -129,8 +129,7 @@ class GoalService {
     if (kDebugMode) {
       print('GoalService.delete goalId: $goalId');
     }
-    _goalRepository.deleteById(goalId);
-    // TODO: history 삭제는 물어보고 응답에따라 지우거나 안지움
-    // _goalHistoryRepository.deleteByGoalId(goalId);
+    await _goalRepository.deleteById(goalId);
+    await _goalHistoryRepository.deleteByGoalId(goalId);
   }
 }
