@@ -48,7 +48,7 @@ void main() async {
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
-    version: 3,
+    version: 2,
   );
 
   runApp(const MyApp());
