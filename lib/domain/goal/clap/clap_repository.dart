@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:three_days/goal/clap/clap.dart';
+import 'package:three_days/domain/goal/clap/clap.dart';
 
 class ClapRepository {
   static const dbFileName = 'three_days.db';

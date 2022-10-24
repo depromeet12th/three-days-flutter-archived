@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:three_days/goal/goal.dart';
-import 'package:three_days/goal/goal_repository.dart';
-import 'package:three_days/goal/goal_widget.dart';
-import 'package:three_days/goal/initial_goal_widget.dart';
+import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/ui/goal/goal_widget.dart';
+import 'package:three_days/ui/goal/initial_goal_widget.dart';
 
 class GoalListPage extends StatefulWidget {
   GoalListPage({super.key});

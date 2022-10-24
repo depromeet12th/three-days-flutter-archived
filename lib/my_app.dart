@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:three_days/design/three_days_colors.dart';
-import 'package:three_days/goal/goal.dart';
-import 'package:three_days/goal/goal_add_page.dart';
-import 'package:three_days/goal/goal_edit_page.dart';
-import 'package:three_days/goal/goal_list_page.dart';
-import 'package:three_days/mypage_page.dart';
-import 'package:three_days/statistics_page.dart';
+import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/ui/goal/goal_add_page.dart';
+import 'package:three_days/ui/goal/goal_edit_page.dart';
+import 'package:three_days/ui/goal/goal_list_page.dart';
+import 'package:three_days/ui/mypage_page.dart';
+import 'package:three_days/ui/statistics_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

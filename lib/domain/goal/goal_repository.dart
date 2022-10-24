@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:three_days/goal/goal.dart';
+import 'package:three_days/domain/goal/goal.dart';
 
 class GoalRepository {
   static const dbFileName = 'three_days.db';

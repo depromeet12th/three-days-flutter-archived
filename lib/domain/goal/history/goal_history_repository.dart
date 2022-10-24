@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:three_days/goal/history/goal_history.dart';
+import 'package:three_days/domain/goal/history/goal_history.dart';
 
 class GoalHistoryRepository {
   static const dbFileName = 'three_days.db';

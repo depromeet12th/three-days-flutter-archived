@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:three_days/goal/goal.dart';
-import 'package:three_days/goal/goal_repository.dart';
+import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/domain/goal/goal_repository.dart';
 
 class GoalWidget extends StatefulWidget {
   GoalWidget({

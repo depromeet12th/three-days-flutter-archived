@@ -1,8 +1,9 @@
-import 'package:three_days/goal/clap/clap_repository.dart';
-import 'package:three_days/goal/goal.dart';
-import 'package:three_days/goal/goal_repository.dart';
-import 'package:three_days/goal/history/goal_history.dart';
-import 'package:three_days/goal/history/goal_history_repository.dart';
+
+import 'package:three_days/domain/goal/clap/clap_repository.dart';
+import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/domain/goal/history/goal_history.dart';
+import 'package:three_days/domain/goal/history/goal_history_repository.dart';
 
 class GoalService {
   // TODO: DI
