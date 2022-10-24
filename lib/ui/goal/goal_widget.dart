@@ -120,19 +120,43 @@ class _GoalWidgetState extends State<GoalWidget> {
     final backgroundColor =
         checked ? Colors.white : const Color.fromRGBO(220, 229, 238, 1.0);
     return GestureDetector(
-      onTapUp: (details) {
+      onTapUp: (details) async {
         if (!focused) {
           return;
         }
-        setState(() {
-          if (widget.goal.clapChecked) {
-            widget.goal.setUnchecked();
-            widget.goalService.uncheck(widget.goal);
-          } else {
-            widget.goal.setChecked();
-            widget.goalService.check(widget.goal);
+        if (widget.goal.clapChecked) {
+          widget.goal.setUnchecked();
+          await widget.goalService.uncheck(widget.goal);
+        } else {
+          widget.goal.setChecked();
+          final clap = await widget.goalService.check(widget.goal);
+          if (clap != null) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text(
+                  '짝심삼일 완료!',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                content: const Text(
+                  '3일동안 목표를 달성한 나를 위해\n박수를 쳐주세요. 짝짝짝!',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('잘했어요'),
+                  ),
+                ],
+              ),
+            );
           }
-        });
+        }
+        setState(() {});
       },
       child: Container(
         decoration: BoxDecoration(
