@@ -40,9 +40,24 @@ class GoalHistory {
     return _checkedAt!;
   }
 
+  @Deprecated('user test')
+  void setCheckedAt(DateTime checkedAt) {
+    _checkedAt = _checkedAt;
+  }
+
   bool isCheckedAtDate(DateTime date) {
     return !_checkedAt!.isBefore(date) &&
         _checkedAt!.isBefore(date.add(const Duration(days: 1)));
+  }
+
+  void setId(int goalHistoryId) {
+    if (this.goalHistoryId > 0) {
+      return;
+    }
+    if (goalHistoryId < 0) {
+      throw Error();
+    }
+    this.goalHistoryId = goalHistoryId;
   }
 
   @override

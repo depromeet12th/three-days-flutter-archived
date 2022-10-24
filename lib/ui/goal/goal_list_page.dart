@@ -255,9 +255,9 @@ class _GoalListPageState extends State<GoalListPage> {
                         ),
                       ],
                     ),
-                  ).then((value) {
+                  ).then((value) async {
                     if (value != null && value == DeleteActionType.delete) {
-                      widget.goalService.delete(goal.goalId);
+                      await widget.goalService.delete(goal.goalId);
                       Navigator.of(context).pop(GoalActionType.delete);
                     } else {
                       Navigator.of(context).pop();

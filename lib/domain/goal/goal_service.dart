@@ -103,6 +103,9 @@ class GoalService {
     // goal 변경 및 저장
     goal.setUnchecked();
     _goalRepository.save(goal);
+    if (kDebugMode) {
+      print('GoalService.uncheck goal: $goal');
+    }
 
     // 오늘 날짜의 goalHistory 있다면 삭제
     final now = DateTime.now();
@@ -115,6 +118,9 @@ class GoalService {
       return !e.getCheckedAt().isBefore(today) &&
           e.getCheckedAt().isBefore(tomorrow);
     }).forEach((goalHistory) {
+      if (kDebugMode) {
+        print('GoalService.uncheck goalHistory: $goalHistory');
+      }
       _goalHistoryRepository.delete(goalHistory.goalHistoryId);
     });
   }

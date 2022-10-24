@@ -22,13 +22,15 @@ class GoalHistoryRepository {
     ).then((value) => value.map((e) => GoalHistory.fromJson(e)).toList());
   }
 
-  Future<void> save(GoalHistory goalHistory) async {
+  Future<GoalHistory> save(GoalHistory goalHistory) async {
     final db = await _getDatabase();
-    db.insert(
+    final goalHistoryId = await db.insert(
       goalHistoryTableName,
       goalHistory.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    goalHistory.setId(goalHistoryId);
+    return goalHistory;
   }
 
   Future<void> delete(int goalHistoryId) async {

@@ -76,4 +76,14 @@ class Goal {
   }) {
     this.title = title;
   }
+
+  void setId(int goalId) {
+    if (this.goalId > 0) {
+      return;
+    }
+    if (goalId < 0) {
+      throw Error();
+    }
+    this.goalId = goalId;
+  }
 }

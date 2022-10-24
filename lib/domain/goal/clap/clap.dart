@@ -47,6 +47,16 @@ class Clap {
     return DateTime(_createdAt!.year, _createdAt!.month, _createdAt!.day);
   }
 
+  void setId(int clapId) {
+    if (this.clapId > 0) {
+      return;
+    }
+    if (clapId < 0) {
+      throw Error();
+    }
+    this.clapId = clapId;
+  }
+
   @override
   String toString() {
     return 'Clap{clapId: $clapId, goalId: $goalId, goalHistoryId: $goalHistoryId, _createdAt: $_createdAt}';

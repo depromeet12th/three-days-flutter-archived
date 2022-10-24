@@ -11,7 +11,7 @@ class GoalRepository {
 
   Future<Goal> save(Goal goal) async {
     final db = await _getDatabase();
-    await db.insert(
+    final goalId = await db.insert(
       goalTableName,
       goal.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -19,6 +19,7 @@ class GoalRepository {
     if (kDebugMode) {
       print('GoalRepository.save goal: $goal');
     }
+    goal.setId(goalId);
     return goal;
   }
 

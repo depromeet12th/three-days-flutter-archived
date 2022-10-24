@@ -8,9 +8,11 @@ class ClapRepository {
 
   Future<List<Clap>> findAll() async {
     final db = await _getDatabase();
-    return db.query(
-      clapTableName,
-    ).then((value) => value.map((e) => Clap.fromJson(e)).toList());
+    return db
+        .query(
+          clapTableName,
+        )
+        .then((value) => value.map((e) => Clap.fromJson(e)).toList());
   }
 
   Future<List<Clap>> findByGoalId(int goalId) async {
@@ -37,7 +39,16 @@ class ClapRepository {
     });
   }
 
-  Future<void> save(Clap clap) async {}
+  Future<Clap> save(Clap clap) async {
+    final db = await _getDatabase();
+    final clapId = await db.insert(
+      clapTableName,
+      clap.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    clap.setId(clapId);
+    return clap;
+  }
 
   Future<Database> _getDatabase() async {
     return openDatabase(
