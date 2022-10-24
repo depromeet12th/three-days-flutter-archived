@@ -40,15 +40,15 @@ void main() async {
       }
       // Run the CREATE TABLE statement on the database.
       await db.execute(
-          'CREATE TABLE goal(goalId INTEGER PRIMARY KEY NOT NULL, title TEXT, days INTEGER, clapIndex INTEGER, clapChecked INTEGER)');
+          'CREATE TABLE goal(goalId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT, days INTEGER, clapIndex INTEGER, clapChecked INTEGER)');
       await db.execute(
-          'CREATE TABLE goal_history(goalHistoryId INTEGER PRIMARY KEY NOT NULL, goalId INTEGER, checkedAt TEXT)');
+          'CREATE TABLE goal_history(goalHistoryId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, goalId INTEGER, checkedAt TEXT)');
       await db.execute(
-          'CREATE TABLE clap(clapId INTEGER PRIMARY KEY NOT NULL, goalId INTEGER, goalHistoryId INTEGER, createdAt TEXT)');
+          'CREATE TABLE clap(clapId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, goalId INTEGER, goalHistoryId INTEGER, createdAt TEXT)');
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
-    version: 2,
+    version: 3,
   );
 
   runApp(const MyApp());
