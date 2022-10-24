@@ -42,10 +42,10 @@ class GoalHistory {
 
   @Deprecated('user test')
   void setCheckedAt(DateTime checkedAt) {
-    _checkedAt = _checkedAt;
+    _checkedAt = checkedAt;
   }
 
-  bool isCheckedAtDate(DateTime date) {
+  bool isCheckedDateAt(DateTime date) {
     return !_checkedAt!.isBefore(date) &&
         _checkedAt!.isBefore(date.add(const Duration(days: 1)));
   }

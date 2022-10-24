@@ -25,7 +25,7 @@ class GoalService {
     // lastClap != null
     //  ? lastClap.createdAt.add(Duration(days: 1))
     //  : min(startDate, yesterday)
-    final historyFromDate;
+    final DateTime historyFromDate;
     if (claps.isNotEmpty) {
       // TODO: clap 시간 역순 정렬
       final lastClap = claps.first;
@@ -42,21 +42,17 @@ class GoalService {
     // 어제x : 0
     // 어제o - 그제x : 1
     // 어제o - 그제o : 2
-    // FIXME: history from, to 구간은 조건 안걸어도 될듯
-    final goalHistories = (await _goalHistoryRepository.findByGoalId(
-        goal.goalId)).where((it) =>
-    !it.getCheckedAt().isBefore(historyFromDate))
-        .where((it) => !it.getCheckedAt().isAfter(historyToDate))
-        .toList();
+    final goalHistories = await _goalHistoryRepository.findByGoalId(
+        goal.goalId);
     final bool hasYesterday = goalHistories
-        .where((e) => e.isCheckedAtDate(yesterday))
+        .where((e) => e.isCheckedDateAt(yesterday))
         .isNotEmpty;
     if (hasYesterday == false) {
       // 어제 안했으면, 오늘 첫번째칸 눌러야함
       return 0;
     }
     final bool hasTheDayBeforeYesterday = goalHistories
-        .where((e) => e.isCheckedAtDate(theDayBeforeYesterday))
+        .where((e) => e.isCheckedDateAt(theDayBeforeYesterday))
         .isNotEmpty;
     if (hasTheDayBeforeYesterday == false) {
       // 어제 했고, 그저께 안했으면 두 번째 칸 눌러야함
@@ -80,19 +76,16 @@ class GoalService {
     await _goalHistoryRepository.save(goalHistory);
 
     // 3일차 짝이면, clap 생성
-    if (await calculateClapIndex(goal, DateTime.now()) == 2) {
+    final index = await calculateClapIndex(goal, DateTime.now());
+    if (kDebugMode) {
+      print('index: $index');
+    }
+    if (index == 2) {
       final clap = Clap(
         goalId: goal.goalId,
         goalHistoryId: goalHistory.goalHistoryId,
       );
-      if (kDebugMode) {
-        print('before save clap: $clap');
-      }
-      await _clapRepository.save(clap);
-      if (kDebugMode) {
-        print('after  save clap: $clap');
-      }
-      return await _clapRepository.findById(clap.clapId);
+      return await _clapRepository.save(clap);
     } else {
       return null;
     }

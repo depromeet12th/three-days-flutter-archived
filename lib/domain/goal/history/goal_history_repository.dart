@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:three_days/domain/goal/history/goal_history.dart';
@@ -30,6 +31,9 @@ class GoalHistoryRepository {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     goalHistory.setId(goalHistoryId);
+    if (kDebugMode) {
+      print('GoalHistoryRepository.save $goalHistory');
+    }
     return goalHistory;
   }
 

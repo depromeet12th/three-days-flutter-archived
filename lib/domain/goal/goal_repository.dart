@@ -16,10 +16,10 @@ class GoalRepository {
       goal.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    if (kDebugMode) {
-      print('GoalRepository.save goal: $goal');
-    }
     goal.setId(goalId);
+    if (kDebugMode) {
+      print('GoalRepository.save $goal');
+    }
     return goal;
   }
 

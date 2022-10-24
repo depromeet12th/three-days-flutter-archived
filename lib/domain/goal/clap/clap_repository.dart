@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:three_days/domain/goal/clap/clap.dart';
@@ -47,6 +48,9 @@ class ClapRepository {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     clap.setId(clapId);
+    if (kDebugMode) {
+      print('ClapRepository.save $clap');
+    }
     return clap;
   }
 
