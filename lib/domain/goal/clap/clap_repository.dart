@@ -15,6 +15,21 @@ class ClapRepository {
     ).then((value) => value.map((e) => Clap.fromJson(e)).toList());
   }
 
+  Future<Clap?> findById(int clapId) async {
+    final db = await _getDatabase();
+    return db.query(
+      clapTableName,
+      where: 'clapId = ?',
+      whereArgs: [clapId],
+    ).then((value) {
+      try {
+        return value.map((e) => Clap.fromJson(e)).toList().first;
+      } on StateError catch (_) {
+        return null;
+      }
+    });
+  }
+
   Future<void> save(Clap clap) async {}
 
   Future<Database> _getDatabase() async {

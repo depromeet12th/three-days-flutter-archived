@@ -19,7 +19,7 @@ class Clap {
     required this.goalHistoryId,
     DateTime? createdAt,
   }) : _createdAt = createdAt {
-    _createdAt = DateTime.now();
+    _createdAt ??= DateTime.now();
   }
 
   static Clap fromJson(Map<String, dynamic> json) {

@@ -1,4 +1,6 @@
 
+import 'package:flutter/foundation.dart';
+import 'package:three_days/domain/goal/clap/clap.dart';
 import 'package:three_days/domain/goal/clap/clap_repository.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
@@ -66,7 +68,7 @@ class GoalService {
   }
 
   /// 오늘 할 일 완료
-  Future<void> complete(Goal goal) async {
+  Future<Clap?> complete(Goal goal) async {
     // goal 변경 및 저장
     goal.setChecked();
     await _goalRepository.save(goal);
@@ -76,6 +78,24 @@ class GoalService {
       goalId: goal.goalId,
     );
     await _goalHistoryRepository.save(goalHistory);
+
+    // 3일차 짝이면, clap 생성
+    if (await calculateClapIndex(goal, DateTime.now()) == 2) {
+      final clap = Clap(
+        goalId: goal.goalId,
+        goalHistoryId: goalHistory.goalHistoryId,
+      );
+      if (kDebugMode) {
+        print('before save clap: $clap');
+      }
+      await _clapRepository.save(clap);
+      if (kDebugMode) {
+        print('after  save clap: $clap');
+      }
+      return await _clapRepository.findById(clap.clapId);
+    } else {
+      return null;
+    }
   }
 
   /// 오늘 한 일 취소
