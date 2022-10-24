@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:three_days/domain/goal/goal.dart';
@@ -15,6 +16,9 @@ class GoalRepository {
       goal.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    if (kDebugMode) {
+      print('GoalRepository.save goal: $goal');
+    }
     return goal;
   }
 

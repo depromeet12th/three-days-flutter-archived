@@ -40,6 +40,15 @@ class GoalHistoryRepository {
     );
   }
 
+  Future<void> deleteByGoalId(int goalId) async {
+    final db = await _getDatabase();
+    await db.delete(
+      goalHistoryTableName,
+      where: 'goalId = ?',
+      whereArgs: [goalId],
+    );
+  }
+
   Future<Database> _getDatabase() async {
     return openDatabase(
       join(await getDatabasesPath(), dbFileName),

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:three_days/domain/goal/clap/clap_repository.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/domain/goal/goal_service.dart';
 import 'package:three_days/domain/goal/history/goal_history_repository.dart';
 import 'package:three_days/ui/goal/goal_widget.dart';
 import 'package:three_days/ui/goal/initial_goal_widget.dart';
@@ -14,6 +15,7 @@ class GoalListPage extends StatefulWidget {
   final GoalRepository goalRepository = GoalRepository();
   final GoalHistoryRepository goalHistoryRepository = GoalHistoryRepository();
   final ClapRepository clapRepository = ClapRepository();
+  final GoalService goalService = GoalService();
 
   @override
   State<StatefulWidget> createState() => _GoalListPageState();
@@ -255,7 +257,7 @@ class _GoalListPageState extends State<GoalListPage> {
                     ),
                   ).then((value) {
                     if (value != null && value == DeleteActionType.delete) {
-                      widget.goalRepository.deleteById(goal.goalId);
+                      widget.goalService.delete(goal.goalId);
                       Navigator.of(context).pop(GoalActionType.delete);
                     } else {
                       Navigator.of(context).pop();
