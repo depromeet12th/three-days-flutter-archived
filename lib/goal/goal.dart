@@ -1,3 +1,4 @@
+// TODO: startDate, endDate 추가
 class Goal {
   int goalId;
   String title;
