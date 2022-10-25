@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:three_days/domain/goal/clap/clap.dart';
 import 'package:three_days/domain/goal/clap/clap_repository.dart';
@@ -13,6 +12,19 @@ class GoalService {
   final GoalHistoryRepository _goalHistoryRepository = GoalHistoryRepository();
   final ClapRepository _clapRepository = ClapRepository();
 
+  /// 성공한 이력 개수
+  Future<int> countHistories(int goalId) async {
+    final count = (await _goalHistoryRepository.findByGoalId(goalId))
+        .map((e) => e.getCheckedDate())
+        .toSet()
+        .length;
+    if (kDebugMode) {
+      print('GoalService.countHistories goalId: $goalId, count: $count');
+    }
+    return count;
+  }
+
+  /// 오늘 체크할 칸이 몇번째인지 계산
   Future<int> calculateClapIndex(Goal goal, DateTime now) async {
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
@@ -42,11 +54,10 @@ class GoalService {
     // 어제x : 0
     // 어제o - 그제x : 1
     // 어제o - 그제o : 2
-    final goalHistories = await _goalHistoryRepository.findByGoalId(
-        goal.goalId);
-    final bool hasYesterday = goalHistories
-        .where((e) => e.isCheckedDateAt(yesterday))
-        .isNotEmpty;
+    final goalHistories =
+        await _goalHistoryRepository.findByGoalId(goal.goalId);
+    final bool hasYesterday =
+        goalHistories.where((e) => e.isCheckedDateAt(yesterday)).isNotEmpty;
     if (hasYesterday == false) {
       // 어제 안했으면, 오늘 첫번째칸 눌러야함
       return 0;
@@ -104,8 +115,8 @@ class GoalService {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final tomorrow = today.add(const Duration(days: 1));
-    final goalHistories = await _goalHistoryRepository.findByGoalId(
-        goal.goalId);
+    final goalHistories =
+        await _goalHistoryRepository.findByGoalId(goal.goalId);
     goalHistories.where((e) {
       // [오늘0시:내일0시)
       return !e.getCheckedAt().isBefore(today) &&

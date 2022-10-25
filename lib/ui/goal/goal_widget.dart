@@ -23,11 +23,22 @@ class GoalWidget extends StatefulWidget {
 
 class _GoalWidgetState extends State<GoalWidget> {
   late Goal goal;
+  int countOfHistories = 0;
 
   @override
   void initState() {
     super.initState();
     goal = widget.goal;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
+
+  _asyncMethod() async {
+    final count = await widget.goalService.countHistories(goal.goalId);
+    setState(() {
+      countOfHistories = count;
+    });
   }
 
   @override
@@ -53,7 +64,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 5.0, horizontal: 12.5),
                     child: Text(
-                      '짝심 ${widget.goal.days}일',
+                      '짝심 $countOfHistories일',
                       style: const TextStyle(
                         color: Color.fromRGBO(0x3F, 0x80, 0xFF, 1.0),
                         fontSize: 13,
@@ -156,7 +167,10 @@ class _GoalWidgetState extends State<GoalWidget> {
             );
           }
         }
-        setState(() {});
+        final count = await widget.goalService.countHistories(goal.goalId);
+        setState(() {
+          countOfHistories = count;
+        });
       },
       child: Container(
         decoration: BoxDecoration(

@@ -58,7 +58,6 @@ class _GoalAddPageState extends State<GoalAddPage> {
                   final goal = await widget.goalRepository.save(
                     Goal(
                       title: goalTextEditingController.value.text,
-                      days: 1,
                     ),
                   );
                   if (kDebugMode) {

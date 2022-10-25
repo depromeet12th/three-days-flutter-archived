@@ -2,7 +2,6 @@
 class Goal {
   int goalId;
   String title;
-  final int days;
 
   /// 0,1,2 중에 오늘 몇번째 짝! 누를수 있는지
   int clapIndex;
@@ -13,7 +12,6 @@ class Goal {
   Goal({
     this.goalId = 0,
     required this.title,
-    required this.days,
     this.clapIndex = 0,
     this.clapChecked = false,
   });
@@ -46,7 +44,6 @@ class Goal {
   Map<String, dynamic> toMap() {
     final map = {
       'title': title,
-      'days': days,
       'clapIndex': clapIndex,
       'clapChecked': clapChecked ? 1 : 0,
     };
@@ -60,7 +57,6 @@ class Goal {
     return Goal(
       goalId: json['goalId'] as int,
       title: json['title'] as String,
-      days: json['days'] as int,
       clapIndex: json['clapIndex'] as int,
       clapChecked: json['clapChecked'] == 1 ? true : false,
     );
@@ -68,7 +64,7 @@ class Goal {
 
   @override
   String toString() {
-    return 'Goal{goalId: $goalId, title: $title, days: $days, clapIndex: $clapIndex, clapChecked: $clapChecked}';
+    return 'Goal{goalId: $goalId, title: $title, clapIndex: $clapIndex, clapChecked: $clapChecked}';
   }
 
   void update({

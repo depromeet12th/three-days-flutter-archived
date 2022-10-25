@@ -40,6 +40,10 @@ class GoalHistory {
     return _checkedAt!;
   }
 
+  DateTime getCheckedDate() {
+    return DateTime(_checkedAt!.year, _checkedAt!.month, _checkedAt!.day);
+  }
+
   @Deprecated('user test')
   void setCheckedAt(DateTime checkedAt) {
     _checkedAt = checkedAt;
