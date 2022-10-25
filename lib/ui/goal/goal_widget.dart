@@ -25,6 +25,8 @@ class _GoalWidgetState extends State<GoalWidget> {
   late Goal goal;
   int countOfHistories = 0;
   bool hasCheckedAtToday = false;
+  // TODO: 23:59:59 ~ 00:00:00 처럼 날짜 바뀔 때 포커싱도 바뀌어야함
+  int focusedIndex = 0;
 
   @override
   void initState() {
@@ -41,9 +43,14 @@ class _GoalWidgetState extends State<GoalWidget> {
       goal.goalId,
       DateTime.now(),
     );
+    final clapIndex = await widget.goalService.calculateClapIndex(
+      goal,
+      DateTime.now(),
+    );
     setState(() {
       countOfHistories = count;
       hasCheckedAtToday = isChecked;
+      focusedIndex = clapIndex;
     });
   }
 
@@ -107,18 +114,18 @@ class _GoalWidgetState extends State<GoalWidget> {
             Row(
               children: [
                 _clapWidget(
-                  checked: widget.goal.isChecked(0, hasCheckedAtToday),
-                  focused: widget.goal.isFocused(0),
+                  checked: widget.goal.isChecked(0, focusedIndex, hasCheckedAtToday),
+                  focused: 0 == focusedIndex,
                 ),
                 const Spacer(),
                 _clapWidget(
-                  checked: widget.goal.isChecked(1, hasCheckedAtToday),
-                  focused: widget.goal.isFocused(1),
+                  checked: widget.goal.isChecked(1, focusedIndex, hasCheckedAtToday),
+                  focused: 1 == focusedIndex,
                 ),
                 const Spacer(),
                 _clapWidget(
-                  checked: widget.goal.isChecked(2, hasCheckedAtToday),
-                  focused: widget.goal.isFocused(2),
+                  checked: widget.goal.isChecked(2, focusedIndex, hasCheckedAtToday),
+                  focused: 2 == focusedIndex,
                 ),
               ],
             ),
