@@ -47,6 +47,12 @@ class Clap {
     return DateTime(_createdAt!.year, _createdAt!.month, _createdAt!.day);
   }
 
+  bool isCreatedDateAt(DateTime dateTime) {
+    DateTime date = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    DateTime createdDate = getCreatedDate();
+    return createdDate.isAtSameMomentAs(date);
+  }
+
   void setId(int clapId) {
     if (this.clapId > 0) {
       return;

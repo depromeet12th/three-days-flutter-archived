@@ -96,19 +96,27 @@ class GoalService {
     await _goalHistoryRepository.save(goalHistory);
 
     // 3일차 짝이면, clap 생성
-    final index = await calculateClapIndex(goal, DateTime.now());
+    DateTime now = DateTime.now();
+    final index = await calculateClapIndex(goal, now);
     if (kDebugMode) {
       print('index: $index');
     }
-    if (index == 2) {
-      final clap = Clap(
-        goalId: goal.goalId,
-        goalHistoryId: goalHistory.goalHistoryId,
-      );
-      return await _clapRepository.save(clap);
-    } else {
+    // 3일차가 아닌 경우 아무것도 안함
+    if (index != 2) {
       return null;
     }
+    final clapsCreatedAtToday = (await _clapRepository.findByGoalId(goal.goalId))
+        .where((e) => e.isCreatedDateAt(now));
+    // 이미 오늘 생성한 박수가 있는 경우
+    if (clapsCreatedAtToday.isNotEmpty) {
+      return clapsCreatedAtToday.first;
+    }
+    // 오늘 처음 박수를 생성하는 경우
+    final clap = Clap(
+      goalId: goal.goalId,
+      goalHistoryId: goalHistory.goalHistoryId,
+    );
+    return await _clapRepository.save(clap);
   }
 
   /// 오늘 한 일 취소
