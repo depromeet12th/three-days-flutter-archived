@@ -27,6 +27,7 @@ class _GoalEditPageState extends State<GoalEditPage> {
   late DateTime endDate;
   TimeOfDay? notificationTime;
   TimeOfDay? remindTime;
+  late bool canSubmit;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _GoalEditPageState extends State<GoalEditPage> {
     startDate = DateTime.now();
     endDate = DateTime.now();
     goalTextEditingController.text = widget.goal.title;
+    canSubmit = true;
   }
 
   @override
@@ -67,7 +69,7 @@ class _GoalEditPageState extends State<GoalEditPage> {
                 bottom: 20.0,
               ),
               child: ElevatedButton(
-                onPressed: () async {
+                onPressed: !canSubmit ? null : () async {
                   widget.goal.update(title: goalTextEditingController.value.text);
                   final goal = await widget.goalRepository.save(widget.goal);
                   if (kDebugMode) {
@@ -126,6 +128,11 @@ class _GoalEditPageState extends State<GoalEditPage> {
               ),
             ),
             TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  canSubmit = value.isNotEmpty;
+                });
+              },
               decoration: const InputDecoration(
                 hintText: '짝심목표를 알려주세요',
               ),
