@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:three_days/goal/form/time_selector_widget.dart';
-import 'package:three_days/goal/goal.dart';
-import 'package:three_days/goal/goal_repository.dart';
+import 'package:three_days/design/three_days_colors.dart';
+import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/ui/form/time_selector_widget.dart';
 
 class GoalAddPage extends StatefulWidget {
   GoalAddPage({super.key});
@@ -15,6 +16,9 @@ class GoalAddPage extends StatefulWidget {
 }
 
 class _GoalAddPageState extends State<GoalAddPage> {
+  static const maxLengthOfTitle = 15;
+  static const maxLengthOfNotificationContent = 20;
+
   bool dateRangeEnabled = false;
   bool timeRangeEnabled = false;
   DateTime startDate = DateTime.now();
@@ -58,7 +62,6 @@ class _GoalAddPageState extends State<GoalAddPage> {
                   final goal = await widget.goalRepository.save(
                     Goal(
                       title: goalTextEditingController.value.text,
-                      days: 1,
                     ),
                   );
                   if (kDebugMode) {
@@ -70,6 +73,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: ThreeDaysColors.primary,
                   minimumSize: const Size.fromHeight(50),
                 ),
                 // TODO: form 입력 상태 따라서 enabled 제어
@@ -120,6 +124,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 hintText: '짝심목표를 알려주세요',
               ),
               controller: goalTextEditingController,
+              maxLength: maxLengthOfTitle,
             ),
             const SizedBox(height: 25),
 
@@ -191,11 +196,11 @@ class _GoalAddPageState extends State<GoalAddPage> {
               ),
             ),
 
-            /// 수행시간
+            /// 수행 시간
             Row(
               children: [
                 const Text(
-                  '수행시간',
+                  '수행 시간',
                   style: TextStyle(
                     fontSize: 15,
                   ),
@@ -257,6 +262,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
               decoration: const InputDecoration(
                 hintText: 'Push 알림 내용을 입력해주세요',
               ),
+              maxLength: maxLengthOfNotificationContent,
             ),
           ],
         ),

@@ -1,15 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:three_days/goal/goal.dart';
-import 'package:three_days/goal/goal_repository.dart';
-import 'package:three_days/goal/goal_widget.dart';
-import 'package:three_days/goal/initial_goal_widget.dart';
+import 'package:three_days/domain/goal/clap/clap_repository.dart';
+import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/domain/goal/goal_service.dart';
+import 'package:three_days/domain/goal/history/goal_history_repository.dart';
+import 'package:three_days/ui/goal/goal_widget.dart';
+import 'package:three_days/ui/goal/initial_goal_widget.dart';
 
 class GoalListPage extends StatefulWidget {
   GoalListPage({super.key});
 
   final GoalRepository goalRepository = GoalRepository();
+  final GoalHistoryRepository goalHistoryRepository = GoalHistoryRepository();
+  final ClapRepository clapRepository = ClapRepository();
+  final GoalService goalService = GoalService();
 
   @override
   State<StatefulWidget> createState() => _GoalListPageState();
@@ -31,8 +37,11 @@ class _GoalListPageState extends State<GoalListPage> {
     setState(() {
       goals.addAll(goalList);
     });
+
     if (kDebugMode) {
       print('goals: $goals');
+      print('goalHistories: ${await widget.goalHistoryRepository.findAll()}');
+      print('claps: ${await widget.clapRepository.findAll()}');
     }
   }
 
@@ -54,6 +63,7 @@ class _GoalListPageState extends State<GoalListPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 25),
                     Text(
                       _getFormattedDate(),
                       style: const TextStyle(
@@ -154,16 +164,19 @@ class _GoalListPageState extends State<GoalListPage> {
         ],
       );
     }
-    return ListView.separated(
+    return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: goals.length,
-      itemBuilder: (BuildContext context, int index) => GoalWidget(
-        goal: goals[index],
-        onKebabMenuPressed: _showModalBottomSheet,
+      itemBuilder: (BuildContext context, int index) => Column(
+        children: [
+          GoalWidget(
+            goal: goals[index],
+            onKebabMenuPressed: _showModalBottomSheet,
+          ),
+          const SizedBox(height: 14),
+        ],
       ),
-      separatorBuilder: (BuildContext context, int index) =>
-          const SizedBox(height: 10),
     );
   }
 
@@ -246,9 +259,9 @@ class _GoalListPageState extends State<GoalListPage> {
                         ),
                       ],
                     ),
-                  ).then((value) {
+                  ).then((value) async {
                     if (value != null && value == DeleteActionType.delete) {
-                      widget.goalRepository.deleteById(goal.goalId);
+                      await widget.goalService.delete(goal.goalId);
                       Navigator.of(context).pop(GoalActionType.delete);
                     } else {
                       Navigator.of(context).pop();

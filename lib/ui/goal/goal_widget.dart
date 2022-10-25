@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:three_days/goal/goal.dart';
-import 'package:three_days/goal/goal_repository.dart';
+import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/domain/goal/goal_service.dart';
 
 class GoalWidget extends StatefulWidget {
   GoalWidget({
@@ -11,6 +12,7 @@ class GoalWidget extends StatefulWidget {
 
   final Goal goal;
   final GoalRepository goalRepository = GoalRepository();
+  final GoalService goalService = GoalService();
   final void Function(BuildContext context, Goal goal) onKebabMenuPressed;
 
   @override
@@ -21,11 +23,35 @@ class GoalWidget extends StatefulWidget {
 
 class _GoalWidgetState extends State<GoalWidget> {
   late Goal goal;
+  int countOfHistories = 0;
+  bool hasCheckedAtToday = false;
+  // TODO: 23:59:59 ~ 00:00:00 처럼 날짜 바뀔 때 포커싱도 바뀌어야함
+  int focusedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     goal = widget.goal;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
+
+  _asyncMethod() async {
+    final count = await widget.goalService.countHistories(goal.goalId);
+    final isChecked = await widget.goalService.isCheckedDateAt(
+      goal.goalId,
+      DateTime.now(),
+    );
+    final clapIndex = await widget.goalService.calculateClapIndex(
+      goal,
+      DateTime.now(),
+    );
+    setState(() {
+      countOfHistories = count;
+      hasCheckedAtToday = isChecked;
+      focusedIndex = clapIndex;
+    });
   }
 
   @override
@@ -51,7 +77,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 5.0, horizontal: 12.5),
                     child: Text(
-                      '짝심 ${widget.goal.days}일',
+                      '짝심 $countOfHistories일',
                       style: const TextStyle(
                         color: Color.fromRGBO(0x3F, 0x80, 0xFF, 1.0),
                         fontSize: 13,
@@ -88,18 +114,18 @@ class _GoalWidgetState extends State<GoalWidget> {
             Row(
               children: [
                 _clapWidget(
-                  checked: widget.goal.isChecked(0),
-                  focused: widget.goal.isFocused(0),
+                  checked: widget.goal.isChecked(0, focusedIndex, hasCheckedAtToday),
+                  focused: 0 == focusedIndex,
                 ),
                 const Spacer(),
                 _clapWidget(
-                  checked: widget.goal.isChecked(1),
-                  focused: widget.goal.isFocused(1),
+                  checked: widget.goal.isChecked(1, focusedIndex, hasCheckedAtToday),
+                  focused: 1 == focusedIndex,
                 ),
                 const Spacer(),
                 _clapWidget(
-                  checked: widget.goal.isChecked(2),
-                  focused: widget.goal.isFocused(2),
+                  checked: widget.goal.isChecked(2, focusedIndex, hasCheckedAtToday),
+                  focused: 2 == focusedIndex,
                 ),
               ],
             ),
@@ -118,22 +144,55 @@ class _GoalWidgetState extends State<GoalWidget> {
     final backgroundColor =
         checked ? Colors.white : const Color.fromRGBO(220, 229, 238, 1.0);
     return GestureDetector(
-      onTapUp: (details) {
+      onTapUp: (details) async {
         if (!focused) {
           return;
         }
-        setState(() {
-          if (widget.goal.clapChecked) {
-            widget.goal.setUnchecked();
-          } else {
-            widget.goal.setChecked();
+        final isChecked = await widget.goalService.isCheckedDateAt(
+          widget.goal.goalId,
+          DateTime.now(),
+        );
+        if (isChecked) {
+          await widget.goalService.uncheck(widget.goal);
+        } else {
+          final clap = await widget.goalService.check(widget.goal);
+          if (clap != null) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text(
+                  '짝심삼일 완료!',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                content: const Text(
+                  '3일동안 목표를 달성한 나를 위해\n박수를 쳐주세요. 짝짝짝!',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('잘했어요'),
+                  ),
+                ],
+              ),
+            );
           }
+        }
+        final count = await widget.goalService.countHistories(goal.goalId);
+        setState(() {
+          countOfHistories = count;
+          hasCheckedAtToday = !hasCheckedAtToday;
         });
       },
       child: Container(
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: backgroundColor,
+
             /// XXX: 테두리가 안쪽으로 그려지지 않아서 선택되지 않은 항목은 배경색이랑 같은 테두리를 그림
             border: Border.all(
               color: focused

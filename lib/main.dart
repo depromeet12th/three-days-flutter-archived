@@ -33,15 +33,22 @@ void main() async {
   openDatabase(
     join(await getDatabasesPath(), 'three_days.db'),
     // When the database is first created, create a table to store dogs.
-    onCreate: (db, version) {
+    onCreate: (db, version) async {
+      if (kDebugMode) {
+        print('database.onCreate.db: $db');
+        print('database.onCreate.version: $version');
+      }
       // Run the CREATE TABLE statement on the database.
-      return db.execute(
-        'CREATE TABLE goal(goalId INTEGER PRIMARY KEY NOT NULL, title TEXT, days INTEGER, clapIndex INTEGER, clapChecked INTEGER)',
-      );
+      await db.execute(
+          'CREATE TABLE goal(goalId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT)');
+      await db.execute(
+          'CREATE TABLE goal_history(goalHistoryId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, goalId INTEGER, checkedAt TEXT)');
+      await db.execute(
+          'CREATE TABLE clap(clapId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, goalId INTEGER, goalHistoryId INTEGER, createdAt TEXT)');
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
-    version: 1,
+    version: 6,
   );
 
   runApp(const MyApp());
