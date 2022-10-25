@@ -15,6 +15,9 @@ class GoalAddPage extends StatefulWidget {
 }
 
 class _GoalAddPageState extends State<GoalAddPage> {
+  static const maxLengthOfTitle = 15;
+  static const maxLengthOfNotificationContent = 20;
+
   bool dateRangeEnabled = false;
   bool timeRangeEnabled = false;
   DateTime startDate = DateTime.now();
@@ -119,7 +122,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 hintText: '짝심목표를 알려주세요',
               ),
               controller: goalTextEditingController,
-              maxLength: 15,
+              maxLength: maxLengthOfTitle,
             ),
             const SizedBox(height: 25),
 
@@ -257,7 +260,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
               decoration: const InputDecoration(
                 hintText: 'Push 알림 내용을 입력해주세요',
               ),
-              maxLength: 20,
+              maxLength: maxLengthOfNotificationContent,
             ),
           ],
         ),
