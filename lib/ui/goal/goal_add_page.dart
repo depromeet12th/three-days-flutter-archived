@@ -25,6 +25,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
   DateTime endDate = DateTime.now();
   TimeOfDay? remindTime;
   TimeOfDay? notificationTime;
+  bool canSubmit = false;
 
   final goalTextEditingController = TextEditingController();
 
@@ -58,7 +59,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 bottom: 20.0,
               ),
               child: ElevatedButton(
-                onPressed: () async {
+                onPressed: !canSubmit ? null : () async {
                   final goal = await widget.goalRepository.save(
                     Goal(
                       title: goalTextEditingController.value.text,
@@ -125,6 +126,11 @@ class _GoalAddPageState extends State<GoalAddPage> {
               ),
               controller: goalTextEditingController,
               maxLength: maxLengthOfTitle,
+              onChanged: (value) {
+                setState(() {
+                  canSubmit = value.isNotEmpty;
+                });
+              },
             ),
             const SizedBox(height: 25),
 
@@ -241,7 +247,9 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 fontSize: 15,
               ),
             ),
-            const SizedBox(height: 5,),
+            const SizedBox(
+              height: 5,
+            ),
             TimeSelectorWidget(
               visible: true,
               onTabInside: (event) async {
