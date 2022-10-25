@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
 import 'package:three_days/domain/goal/goal_service.dart';
@@ -25,6 +26,7 @@ class _GoalWidgetState extends State<GoalWidget> {
   late Goal goal;
   int countOfHistories = 0;
   bool hasCheckedAtToday = false;
+
   // TODO: 23:59:59 ~ 00:00:00 처럼 날짜 바뀔 때 포커싱도 바뀌어야함
   int focusedIndex = 0;
 
@@ -114,17 +116,20 @@ class _GoalWidgetState extends State<GoalWidget> {
             Row(
               children: [
                 _clapWidget(
-                  checked: widget.goal.isChecked(0, focusedIndex, hasCheckedAtToday),
+                  checked:
+                      widget.goal.isChecked(0, focusedIndex, hasCheckedAtToday),
                   focused: 0 == focusedIndex,
                 ),
                 const Spacer(),
                 _clapWidget(
-                  checked: widget.goal.isChecked(1, focusedIndex, hasCheckedAtToday),
+                  checked:
+                      widget.goal.isChecked(1, focusedIndex, hasCheckedAtToday),
                   focused: 1 == focusedIndex,
                 ),
                 const Spacer(),
                 _clapWidget(
-                  checked: widget.goal.isChecked(2, focusedIndex, hasCheckedAtToday),
+                  checked:
+                      widget.goal.isChecked(2, focusedIndex, hasCheckedAtToday),
                   focused: 2 == focusedIndex,
                 ),
               ],
@@ -160,21 +165,34 @@ class _GoalWidgetState extends State<GoalWidget> {
             showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                titlePadding: const EdgeInsets.only(top: 40),
                 title: const Text(
                   '짝심삼일 완료!',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20,
+                    color: Color.fromRGBO(0x11, 0x11, 0x11, 1.0),
                   ),
                 ),
                 content: const Text(
                   '3일동안 목표를 달성한 나를 위해\n박수를 쳐주세요. 짝짝짝!',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
+                    color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
                   ),
                 ),
+                actionsAlignment: MainAxisAlignment.center,
+                actionsPadding: const EdgeInsets.only(bottom: 20),
                 actions: [
                   ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ThreeDaysColors.primary,
+                    ),
                     child: const Text('잘했어요'),
                   ),
                 ],
