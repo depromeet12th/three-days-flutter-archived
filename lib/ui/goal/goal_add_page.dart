@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
 import 'package:three_days/ui/form/time_selector_widget.dart';
@@ -72,6 +73,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: ThreeDaysColors.primary,
                   minimumSize: const Size.fromHeight(50),
                 ),
                 // TODO: form 입력 상태 따라서 enabled 제어

@@ -1,3 +1,4 @@
+import 'package:three_days/design/three_days_colors.dart';
 import 'package:flutter/material.dart';
 
 class InitialGoal extends StatelessWidget {
@@ -37,7 +38,7 @@ class InitialGoal extends StatelessWidget {
                   Navigator.of(context).pushNamed('/goal/add');
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: const Color.fromRGBO(0x3F, 0x80, 0xFF, 1.0),
+                  backgroundColor: ThreeDaysColors.primary,
                 ),
                 child: const Text('목표 만들기'),
               ),
