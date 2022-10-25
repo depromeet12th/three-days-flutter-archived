@@ -53,6 +53,8 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: ThreeDaysColors.primary,
+            disabledBackgroundColor: const Color.fromRGBO(0xAC, 0xAC, 0xAC, 1.0),
+            disabledForegroundColor: Colors.white,
             elevation: 0.0,
           ),
         ),
