@@ -35,7 +35,27 @@ class MyApp extends StatelessWidget {
             fontSize: 11,
           ),
         ),
+        dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          titleTextStyle: const TextStyle(
+            color: Color.fromRGBO(0x11, 0x11, 0x11, 1.0),
+            fontSize: 20,
+          ),
+          contentTextStyle: const TextStyle(
+            color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
+            fontSize: 15,
+          ),
+          actionsPadding: const EdgeInsets.only(bottom: 20),
+        ),
         fontFamily: 'Suit',
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ThreeDaysColors.primary,
+            elevation: 0.0,
+          ),
+        ),
       ),
       initialRoute: '/goal/list',
       onGenerateRoute: (settings) {

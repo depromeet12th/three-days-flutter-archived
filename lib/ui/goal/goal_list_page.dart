@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/clap/clap_repository.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
@@ -225,39 +226,52 @@ class _GoalListPageState extends State<GoalListPage> {
                   showDialog<DeleteActionType>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
+                      titlePadding: const EdgeInsets.only(top: 40),
                       title: const Text(
                         '정말 삭제하시겠어요?',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                        textAlign: TextAlign.center,
                       ),
                       content: const Text(
                         '목표를 삭제하게되면\n히스토리까지 모두 삭제되며 복구되지 않아요',
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
+                        textAlign: TextAlign.center,
                       ),
+                      actionsAlignment: MainAxisAlignment.center,
+                      actionsPadding: const EdgeInsets.only(bottom: 20),
                       actions: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromRGBO(0xEF, 0xEF, 0xEF, 1.0),
+                            elevation: 0.0,
                           ),
                           onPressed: () => Navigator.of(context)
                               .pop(DeleteActionType.cancel),
-                          child: const Text(
-                            '그냥 둘게요',
-                            style: TextStyle(
-                              color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 15,
+                            ),
+                            child: Text(
+                              '그냥 둘게요',
+                              style: TextStyle(
+                                color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
+                              ),
                             ),
                           ),
                         ),
                         ElevatedButton(
                           onPressed: () => Navigator.of(context)
                               .pop(DeleteActionType.delete),
-                          child: const Text('삭제할게요'),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 15,
+                            ),
+                            child: Text('삭제할게요'),
+                          ),
                         ),
                       ],
+                      insetPadding: const EdgeInsets.symmetric(vertical: 28),
                     ),
                   ).then((value) async {
                     if (value != null && value == DeleteActionType.delete) {
