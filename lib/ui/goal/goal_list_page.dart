@@ -163,16 +163,19 @@ class _GoalListPageState extends State<GoalListPage> {
         ],
       );
     }
-    return ListView.separated(
+    return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: goals.length,
-      itemBuilder: (BuildContext context, int index) => GoalWidget(
-        goal: goals[index],
-        onKebabMenuPressed: _showModalBottomSheet,
+      itemBuilder: (BuildContext context, int index) => Column(
+        children: [
+          GoalWidget(
+            goal: goals[index],
+            onKebabMenuPressed: _showModalBottomSheet,
+          ),
+          const SizedBox(height: 14),
+        ],
       ),
-      separatorBuilder: (BuildContext context, int index) =>
-          const SizedBox(height: 10),
     );
   }
 
