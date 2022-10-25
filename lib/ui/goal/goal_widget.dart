@@ -24,6 +24,7 @@ class GoalWidget extends StatefulWidget {
 class _GoalWidgetState extends State<GoalWidget> {
   late Goal goal;
   int countOfHistories = 0;
+  bool hasCheckedAtToday = false;
 
   @override
   void initState() {
@@ -36,8 +37,13 @@ class _GoalWidgetState extends State<GoalWidget> {
 
   _asyncMethod() async {
     final count = await widget.goalService.countHistories(goal.goalId);
+    final isChecked = await widget.goalService.isCheckedDateAt(
+      goal.goalId,
+      DateTime.now(),
+    );
     setState(() {
       countOfHistories = count;
+      hasCheckedAtToday = isChecked;
     });
   }
 
@@ -101,17 +107,17 @@ class _GoalWidgetState extends State<GoalWidget> {
             Row(
               children: [
                 _clapWidget(
-                  checked: widget.goal.isChecked(0),
+                  checked: widget.goal.isChecked(0, hasCheckedAtToday),
                   focused: widget.goal.isFocused(0),
                 ),
                 const Spacer(),
                 _clapWidget(
-                  checked: widget.goal.isChecked(1),
+                  checked: widget.goal.isChecked(1, hasCheckedAtToday),
                   focused: widget.goal.isFocused(1),
                 ),
                 const Spacer(),
                 _clapWidget(
-                  checked: widget.goal.isChecked(2),
+                  checked: widget.goal.isChecked(2, hasCheckedAtToday),
                   focused: widget.goal.isFocused(2),
                 ),
               ],
@@ -135,11 +141,13 @@ class _GoalWidgetState extends State<GoalWidget> {
         if (!focused) {
           return;
         }
-        if (widget.goal.clapChecked) {
-          widget.goal.setUnchecked();
+        final isChecked = await widget.goalService.isCheckedDateAt(
+          widget.goal.goalId,
+          DateTime.now(),
+        );
+        if (isChecked) {
           await widget.goalService.uncheck(widget.goal);
         } else {
-          widget.goal.setChecked();
           final clap = await widget.goalService.check(widget.goal);
           if (clap != null) {
             showDialog(
@@ -170,12 +178,14 @@ class _GoalWidgetState extends State<GoalWidget> {
         final count = await widget.goalService.countHistories(goal.goalId);
         setState(() {
           countOfHistories = count;
+          hasCheckedAtToday = !hasCheckedAtToday;
         });
       },
       child: Container(
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: backgroundColor,
+
             /// XXX: 테두리가 안쪽으로 그려지지 않아서 선택되지 않은 항목은 배경색이랑 같은 테두리를 그림
             border: Border.all(
               color: focused

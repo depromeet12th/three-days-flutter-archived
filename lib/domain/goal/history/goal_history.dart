@@ -49,7 +49,9 @@ class GoalHistory {
     _checkedAt = checkedAt;
   }
 
-  bool isCheckedDateAt(DateTime date) {
+  /// dateTime 의 0시 이상 24시 미만 동안에 기록되었는지
+  bool isCheckedDateAt(DateTime dateTime) {
+    final date = DateTime(dateTime.year, dateTime.month, dateTime.day);
     return !_checkedAt!.isBefore(date) &&
         _checkedAt!.isBefore(date.add(const Duration(days: 1)));
   }

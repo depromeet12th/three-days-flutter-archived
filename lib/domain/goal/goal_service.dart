@@ -24,6 +24,19 @@ class GoalService {
     return count;
   }
 
+  /// 오늘 완료되었는지 여부
+  Future<bool> isCheckedDateAt(int goalId, DateTime dateTime) async {
+    final hasCheckedAtToday =
+        (await _goalHistoryRepository.findByGoalId(goalId))
+            .where((e) => e.isCheckedDateAt(dateTime))
+            .isNotEmpty;
+    if (kDebugMode) {
+      print(
+          'GoalService.isCheckedDateAt goalId: $goalId, dateTime: $dateTime, hasCheckedAtToday: $hasCheckedAtToday');
+    }
+    return hasCheckedAtToday;
+  }
+
   /// 오늘 체크할 칸이 몇번째인지 계산
   Future<int> calculateClapIndex(Goal goal, DateTime now) async {
     final today = DateTime(now.year, now.month, now.day);
@@ -76,10 +89,6 @@ class GoalService {
 
   /// 오늘 할 일 완료
   Future<Clap?> check(Goal goal) async {
-    // goal 변경 및 저장
-    goal.setChecked();
-    await _goalRepository.save(goal);
-
     // goalHistory 생성
     final goalHistory = GoalHistory(
       goalId: goal.goalId,
@@ -104,9 +113,6 @@ class GoalService {
 
   /// 오늘 한 일 취소
   Future<void> uncheck(Goal goal) async {
-    // goal 변경 및 저장
-    goal.setUnchecked();
-    _goalRepository.save(goal);
     if (kDebugMode) {
       print('GoalService.uncheck goal: $goal');
     }
@@ -121,11 +127,11 @@ class GoalService {
       // [오늘0시:내일0시)
       return !e.getCheckedAt().isBefore(today) &&
           e.getCheckedAt().isBefore(tomorrow);
-    }).forEach((goalHistory) {
+    }).forEach((goalHistory) async {
       if (kDebugMode) {
         print('GoalService.uncheck goalHistory: $goalHistory');
       }
-      _goalHistoryRepository.delete(goalHistory.goalHistoryId);
+      await _goalHistoryRepository.delete(goalHistory.goalHistoryId);
     });
   }
 
