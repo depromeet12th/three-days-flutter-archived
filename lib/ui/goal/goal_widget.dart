@@ -165,34 +165,19 @@ class _GoalWidgetState extends State<GoalWidget> {
             showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
                 titlePadding: const EdgeInsets.only(top: 40),
                 title: const Text(
                   '짝심삼일 완료!',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color.fromRGBO(0x11, 0x11, 0x11, 1.0),
-                  ),
                 ),
                 content: const Text(
                   '3일동안 목표를 달성한 나를 위해\n박수를 쳐주세요. 짝짝짝!',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
-                  ),
                 ),
                 actionsAlignment: MainAxisAlignment.center,
-                actionsPadding: const EdgeInsets.only(bottom: 20),
                 actions: [
                   ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ThreeDaysColors.primary,
-                    ),
                     child: const Text('잘했어요'),
                   ),
                 ],

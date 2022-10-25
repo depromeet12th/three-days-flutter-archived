@@ -37,9 +37,6 @@ class InitialGoal extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushNamed('/goal/add');
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ThreeDaysColors.primary,
-                ),
                 child: const Text('목표 만들기'),
               ),
             ],
