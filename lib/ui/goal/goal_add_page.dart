@@ -192,11 +192,11 @@ class _GoalAddPageState extends State<GoalAddPage> {
               ),
             ),
 
-            /// 수행시간
+            /// 수행 시간
             Row(
               children: [
                 const Text(
-                  '수행시간',
+                  '수행 시간',
                   style: TextStyle(
                     fontSize: 15,
                   ),
