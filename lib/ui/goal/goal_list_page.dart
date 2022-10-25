@@ -63,6 +63,7 @@ class _GoalListPageState extends State<GoalListPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 25),
                     Text(
                       _getFormattedDate(),
                       style: const TextStyle(
