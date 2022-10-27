@@ -35,8 +35,8 @@ class _GoalEditPageState extends State<GoalEditPage> {
   @override
   void initState() {
     super.initState();
-    dateRangeEnabled = false;
-    timeRangeEnabled = false;
+    dateRangeEnabled = true;
+    timeRangeEnabled = true;
     startDate = DateTime.now();
     endDate = DateTime.now();
     goalTextEditingController.text = widget.goal.title;
