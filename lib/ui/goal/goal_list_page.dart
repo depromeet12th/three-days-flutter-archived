@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/clap/clap_repository.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
 import 'package:three_days/domain/goal/goal_service.dart';
 import 'package:three_days/domain/goal/history/goal_history_repository.dart';
+import 'package:three_days/ui/goal/goal_add_button.dart';
 import 'package:three_days/ui/goal/goal_widget.dart';
 import 'package:three_days/ui/goal/initial_goal_widget.dart';
 
@@ -85,28 +85,7 @@ class _GoalListPageState extends State<GoalListPage> {
                           ),
                         ),
                         const Spacer(),
-                        Visibility(
-                          maintainSize: true,
-                          maintainAnimation: true,
-                          maintainState: true,
-                          visible: goals.isNotEmpty,
-                          child: GestureDetector(
-                            onTapUp: (_) {
-                              Navigator.of(context).pushNamed('/goal/add');
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color:
-                                    const Color.fromRGBO(0xF0, 0xF0, 0xF0, 1.0),
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(14.0),
-                                child: Icon(Icons.add),
-                              ),
-                            ),
-                          ),
-                        ),
+                        GoalAddButton(visible: goals.isNotEmpty),
                       ],
                     ),
                   ],
