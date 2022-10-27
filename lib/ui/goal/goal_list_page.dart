@@ -164,9 +164,7 @@ class _GoalListPageState extends State<GoalListPage> {
   }
 
   String _getFormattedDate() {
-    /// TODO: current locale
-    final formatted = DateFormat('MM. dd. (E)').format(DateTime.now());
-    return formatted;
+    return DateFormat('MM. dd. (E)', 'ko').format(DateTime.now());
   }
 
   /// goal_widget 에서 호출하는 콜백 메서드.
