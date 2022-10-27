@@ -79,6 +79,8 @@ flutter:
     - images/icon_home.png
     - images/icon_mypage.png
     - images/icon_statistics.png
+    - images/icon_bin.svg
+    - images/icon_pencil.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

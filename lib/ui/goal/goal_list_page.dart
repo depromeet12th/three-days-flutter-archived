@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:three_days/domain/goal/clap/clap_repository.dart';
 import 'package:three_days/domain/goal/goal.dart';
@@ -180,7 +181,14 @@ class _GoalListPageState extends State<GoalListPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.edit),
+                leading: Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: SvgPicture.asset(
+                    'images/icon_pencil.svg',
+                    width: 16,
+                    height: 16,
+                  ),
+                ),
                 title: const Text(
                   '수정하기',
                   style: TextStyle(
@@ -201,7 +209,14 @@ class _GoalListPageState extends State<GoalListPage> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.delete),
+                leading: Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: SvgPicture.asset(
+                    'images/icon_bin.svg',
+                    width: 16,
+                    height: 16,
+                  ),
+                ),
                 title: const Text(
                   '삭제하기',
                   style: TextStyle(
