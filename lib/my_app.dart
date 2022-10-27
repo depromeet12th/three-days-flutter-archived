@@ -29,10 +29,12 @@ class MyApp extends StatelessWidget {
           selectedItemColor: ThreeDaysColors.textBlack,
           selectedLabelStyle: TextStyle(
             fontSize: 11,
+            fontWeight: FontWeight.w600,
           ),
           unselectedItemColor: Color.fromRGBO(0xB0, 0xB8, 0xC1, 1.0),
           unselectedLabelStyle: TextStyle(
             fontSize: 11,
+            fontWeight: FontWeight.w500,
           ),
         ),
         dialogTheme: DialogTheme(
@@ -56,6 +58,11 @@ class MyApp extends StatelessWidget {
             disabledBackgroundColor: const Color.fromRGBO(0xAC, 0xAC, 0xAC, 1.0),
             disabledForegroundColor: Colors.white,
             elevation: 0.0,
+            textStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
           ),
         ),
       ),

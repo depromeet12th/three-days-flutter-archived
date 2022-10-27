@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/ui/form/sub_title_text.dart';
+import 'package:three_days/ui/form/three_days_date_range_field.dart';
+import 'package:three_days/ui/form/three_days_text_form_field.dart';
 import 'package:three_days/ui/form/time_selector_widget.dart';
 
 class GoalAddPage extends StatefulWidget {
@@ -29,7 +32,6 @@ class _GoalAddPageState extends State<GoalAddPage> {
 
   final goalTextEditingController = TextEditingController();
 
-  /// TODO: textField 현재글자수 표시, 글자수 제한
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -59,7 +61,9 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 bottom: 20.0,
               ),
               child: ElevatedButton(
-                onPressed: !canSubmit ? null : () async {
+                onPressed: !canSubmit
+                    ? null
+                    : () async {
                   final goal = await widget.goalRepository.save(
                     Goal(
                       title: goalTextEditingController.value.text,
@@ -68,16 +72,18 @@ class _GoalAddPageState extends State<GoalAddPage> {
                   if (kDebugMode) {
                     print('createdGoal: $goal');
                   }
+                  if (!mounted) {
+                    return;
+                  }
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     '/goal/list',
-                    (route) => route.settings.name == '/goal/list',
+                        (route) => route.settings.name == '/goal/list',
                   );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ThreeDaysColors.primary,
                   minimumSize: const Size.fromHeight(50),
                 ),
-                // TODO: form 입력 상태 따라서 enabled 제어
                 child: const Text(
                   '목표 만들기',
                   style: TextStyle(
@@ -107,6 +113,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
               '짝심목표 만들기',
               style: TextStyle(
                 fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(
@@ -114,17 +121,10 @@ class _GoalAddPageState extends State<GoalAddPage> {
             ),
 
             /// 목표
-            const Text(
-              '목표',
-              style: TextStyle(
-                fontSize: 15,
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: '짝심목표를 알려주세요',
-              ),
+            const ThreeDaysSubTitleText(data: '목표'),
+            ThreeDaysTextFormField(
               controller: goalTextEditingController,
+              hintText: '짝심목표를 알려주세요',
               maxLength: maxLengthOfTitle,
               onChanged: (value) {
                 setState(() {
@@ -137,12 +137,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
             /// 목표 기간
             Row(
               children: [
-                const Text(
-                  '목표 기간',
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
+                const ThreeDaysSubTitleText(data: '목표 기간'),
                 const Spacer(),
                 Switch(
                   value: dateRangeEnabled,
@@ -154,63 +149,16 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 )
               ],
             ),
-            // TODO: 시작, 종료 시각 사이 선 긋기
-            Visibility(
+            ThreeDaysDateRangeField(
               visible: dateRangeEnabled,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(10.0),
-                      ),
-                      color: Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
-                    ),
-                    height: 45,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          const Text('시작'),
-                          const Spacer(),
-                          Text(_getFormattedDate(startDate)),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(10.0),
-                      ),
-                      color: Color.fromRGBO(0xF9, 0xFa, 0xFB, 1.0),
-                    ),
-                    height: 45,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          const Text('종료'),
-                          const Spacer(),
-                          Text(_getFormattedDate(endDate)),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                ],
-              ),
+              startDate: startDate,
+              endDate: endDate,
             ),
 
             /// 수행 시간
             Row(
               children: [
-                const Text(
-                  '수행 시간',
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
+                const ThreeDaysSubTitleText(data: '수행 시간'),
                 const Spacer(),
                 Switch(
                   value: timeRangeEnabled,
@@ -241,12 +189,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
             const SizedBox(height: 25),
 
             /// Push 알림 설정
-            const Text(
-              'Push 알림 설정',
-              style: TextStyle(
-                fontSize: 15,
-              ),
-            ),
+            const ThreeDaysSubTitleText(data: 'Push 알림 설정'),
             const SizedBox(
               height: 5,
             ),
@@ -266,19 +209,13 @@ class _GoalAddPageState extends State<GoalAddPage> {
               },
               timeOfDay: notificationTime,
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Push 알림 내용을 입력해주세요',
-              ),
+            const ThreeDaysTextFormField(
+              hintText: 'Push 알림 내용을 입력해주세요',
               maxLength: maxLengthOfNotificationContent,
             ),
           ],
         ),
       ),
     );
-  }
-
-  String _getFormattedDate(DateTime dateTime) {
-    return DateFormat('yyyy. MM. dd.').format(dateTime);
   }
 }

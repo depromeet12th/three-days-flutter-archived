@@ -31,10 +31,11 @@ class TimeSelectorWidget extends StatelessWidget {
             child: Text(
               timeOfDay?.let((it) => _getFormattedTime(it)) ?? '시간을 선택해주세요',
               style: TextStyle(
-                fontSize: 15,
                 color: timeOfDay != null
                     ? const Color.fromRGBO(0x75, 0x75, 0x75, 1.0)
                     : const Color.fromRGBO(0xC5, 0xC5, 0xC5, 1.0),
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),

@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/ui/form/sub_title_text.dart';
+import 'package:three_days/ui/form/three_days_date_range_field.dart';
+import 'package:three_days/ui/form/three_days_text_form_field.dart';
 import 'package:three_days/ui/form/time_selector_widget.dart';
 
 class GoalEditPage extends StatefulWidget {
@@ -46,6 +49,7 @@ class _GoalEditPageState extends State<GoalEditPage> {
       child: Scaffold(
         body: Column(
           children: [
+
             /// 닫기 버튼
             Align(
               alignment: Alignment.centerRight,
@@ -69,22 +73,28 @@ class _GoalEditPageState extends State<GoalEditPage> {
                 bottom: 20.0,
               ),
               child: ElevatedButton(
-                onPressed: !canSubmit ? null : () async {
-                  widget.goal.update(title: goalTextEditingController.value.text);
-                  final goal = await widget.goalRepository.save(widget.goal);
+                onPressed: !canSubmit
+                    ? null
+                    : () async {
+                  widget.goal.update(
+                      title: goalTextEditingController.value.text);
+                  final goal =
+                  await widget.goalRepository.save(widget.goal);
                   if (kDebugMode) {
                     print('updatedGoal: $goal');
                   }
+                  if (!mounted) {
+                    return;
+                  }
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/goal/list',
-                      (route) => route.settings.name == '/goal/list',
+                    '/goal/list',
+                        (route) => route.settings.name == '/goal/list',
                   );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ThreeDaysColors.primary,
                   minimumSize: const Size.fromHeight(50),
                 ),
-                // TODO: form 입력 상태 따라서 enabled 제어
                 child: const Text(
                   '저장',
                   style: TextStyle(
@@ -114,6 +124,7 @@ class _GoalEditPageState extends State<GoalEditPage> {
               '짝심목표 수정하기',
               style: TextStyle(
                 fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(
@@ -121,34 +132,23 @@ class _GoalEditPageState extends State<GoalEditPage> {
             ),
 
             /// 목표
-            const Text(
-              '목표',
-              style: TextStyle(
-                fontSize: 15,
-              ),
-            ),
-            TextFormField(
+            const ThreeDaysSubTitleText(data: '목표'),
+            ThreeDaysTextFormField(
+              controller: goalTextEditingController,
+              hintText: '짝심목표를 알려주세요',
+              maxLength: 15,
               onChanged: (value) {
                 setState(() {
                   canSubmit = value.isNotEmpty;
                 });
               },
-              decoration: const InputDecoration(
-                hintText: '짝심목표를 알려주세요',
-              ),
-              controller: goalTextEditingController,
             ),
             const SizedBox(height: 25),
 
             /// 목표 기간
             Row(
               children: [
-                const Text(
-                  '목표 기간',
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
+                const ThreeDaysSubTitleText(data: '목표 기간'),
                 const Spacer(),
                 Switch(
                   value: dateRangeEnabled,
@@ -160,63 +160,16 @@ class _GoalEditPageState extends State<GoalEditPage> {
                 )
               ],
             ),
-            // TODO: 시작, 종료 시각 사이 선 긋기
-            Visibility(
+            ThreeDaysDateRangeField(
               visible: dateRangeEnabled,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(10.0),
-                      ),
-                      color: Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
-                    ),
-                    height: 45,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          const Text('시작'),
-                          const Spacer(),
-                          Text(_getFormattedDate(startDate)),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(10.0),
-                      ),
-                      color: Color.fromRGBO(0xF9, 0xFa, 0xFB, 1.0),
-                    ),
-                    height: 45,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          const Text('종료'),
-                          const Spacer(),
-                          Text(_getFormattedDate(endDate)),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                ],
-              ),
+              startDate: startDate,
+              endDate: endDate,
             ),
 
-            /// 수행시간
+            /// 수행 시간
             Row(
               children: [
-                const Text(
-                  '수행시간',
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
+                const ThreeDaysSubTitleText(data: '수행 시간'),
                 const Spacer(),
                 Switch(
                   value: timeRangeEnabled,
@@ -247,13 +200,10 @@ class _GoalEditPageState extends State<GoalEditPage> {
             const SizedBox(height: 25),
 
             /// Push 알림 설정
-            const Text(
-              'Push 알림 설정',
-              style: TextStyle(
-                fontSize: 15,
-              ),
+            const ThreeDaysSubTitleText(data: 'Push 알림 설정'),
+            const SizedBox(
+              height: 5,
             ),
-            const SizedBox(height: 5,),
             TimeSelectorWidget(
               visible: true,
               onTabInside: (event) async {
@@ -270,10 +220,9 @@ class _GoalEditPageState extends State<GoalEditPage> {
               },
               timeOfDay: notificationTime,
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Push 알림 내용을 입력해주세요',
-              ),
+            const ThreeDaysTextFormField(
+              hintText: 'Push 알림 내용을 입력해주세요',
+              maxLength: 20,
             ),
           ],
         ),

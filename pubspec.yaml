@@ -109,11 +109,16 @@ flutter:
     - family: Suit
       fonts:
         - asset: fonts/SUIT-Bold.otf
+          weight: 700
         - asset: fonts/SUIT-ExtraBold.otf
+          weight: 800
         - asset: fonts/SUIT-ExtraLight.otf
         - asset: fonts/SUIT-Heavy.otf
         - asset: fonts/SUIT-Light.otf
         - asset: fonts/SUIT-Medium.otf
+          weight: 500
         - asset: fonts/SUIT-Regular.otf
+          weight: 400
         - asset: fonts/SUIT-SemiBold.otf
+          weight: 600
         - asset: fonts/SUIT-Thin.otf
