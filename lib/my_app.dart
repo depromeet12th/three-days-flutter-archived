@@ -44,10 +44,12 @@ class MyApp extends StatelessWidget {
           titleTextStyle: const TextStyle(
             color: Color.fromRGBO(0x11, 0x11, 0x11, 1.0),
             fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
           contentTextStyle: const TextStyle(
             color: Color.fromRGBO(0x77, 0x77, 0x77, 1.0),
             fontSize: 15,
+            fontWeight: FontWeight.normal,
           ),
           actionsPadding: const EdgeInsets.only(bottom: 20),
         ),
