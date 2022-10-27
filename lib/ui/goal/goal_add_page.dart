@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
@@ -22,8 +21,8 @@ class _GoalAddPageState extends State<GoalAddPage> {
   static const maxLengthOfTitle = 15;
   static const maxLengthOfNotificationContent = 20;
 
-  bool dateRangeEnabled = false;
-  bool timeRangeEnabled = false;
+  bool dateRangeEnabled = true;
+  bool timeRangeEnabled = true;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
   TimeOfDay? remindTime;
