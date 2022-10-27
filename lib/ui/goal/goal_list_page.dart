@@ -246,13 +246,16 @@ class _GoalListPageState extends State<GoalListPage> {
                             backgroundColor:
                                 const Color.fromRGBO(0xEF, 0xEF, 0xEF, 1.0),
                             elevation: 0.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                           onPressed: () => Navigator.of(context)
                               .pop(DeleteActionType.cancel),
                           child: const Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 18,
-                              vertical: 15,
+                              vertical: 10,
                             ),
                             child: Text(
                               '그냥 둘게요',
@@ -265,10 +268,15 @@ class _GoalListPageState extends State<GoalListPage> {
                         ElevatedButton(
                           onPressed: () => Navigator.of(context)
                               .pop(DeleteActionType.delete),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
                           child: const Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 18,
-                              vertical: 15,
+                              vertical: 10,
                             ),
                             child: Text('삭제할게요'),
                           ),
@@ -279,6 +287,9 @@ class _GoalListPageState extends State<GoalListPage> {
                   ).then((value) async {
                     if (value != null && value == DeleteActionType.delete) {
                       await widget.goalService.delete(goal.goalId);
+                      if (!mounted) {
+                        return;
+                      }
                       Navigator.of(context).pop(GoalActionType.delete);
                     } else {
                       Navigator.of(context).pop();
