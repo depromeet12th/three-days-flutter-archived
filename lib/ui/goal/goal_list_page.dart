@@ -239,7 +239,6 @@ class _GoalListPageState extends State<GoalListPage> {
                         textAlign: TextAlign.center,
                       ),
                       actionsAlignment: MainAxisAlignment.center,
-                      actionsPadding: const EdgeInsets.only(bottom: 20),
                       actions: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(

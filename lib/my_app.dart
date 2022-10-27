@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             fontSize: 15,
             fontWeight: FontWeight.normal,
           ),
-          actionsPadding: const EdgeInsets.only(bottom: 20),
+          actionsPadding: const EdgeInsets.only(bottom: 25),
         ),
         fontFamily: 'Suit',
         elevatedButtonTheme: ElevatedButtonThemeData(

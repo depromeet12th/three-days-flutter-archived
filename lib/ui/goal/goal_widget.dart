@@ -178,6 +178,15 @@ class _GoalWidgetState extends State<GoalWidget> {
                 actionsAlignment: MainAxisAlignment.center,
                 actions: [
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 56,
+                      ),
+                    ),
                     onPressed: () => Navigator.of(context).pop(),
                     child: const Text('잘했어요'),
                   ),
