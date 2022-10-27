@@ -22,6 +22,7 @@ class InitialGoal extends StatelessWidget {
                 '짝심삼일 시작해보실래요?',
                 style: TextStyle(
                   fontSize: 17,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 5),
@@ -30,6 +31,7 @@ class InitialGoal extends StatelessWidget {
                 style: TextStyle(
                   color: Color.fromRGBO(0x75, 0x75, 0x75, 1.0),
                   fontSize: 15,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 20),

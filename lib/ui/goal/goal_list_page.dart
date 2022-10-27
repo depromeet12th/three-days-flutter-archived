@@ -70,6 +70,7 @@ class _GoalListPageState extends State<GoalListPage> {
                       style: const TextStyle(
                         color: Color.fromRGBO(0x8F, 0x8F, 0x8F, 1.0),
                         fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(
@@ -82,6 +83,7 @@ class _GoalListPageState extends State<GoalListPage> {
                           '작심삼일에서\n작심삼백일까지 함께해요.',
                           style: TextStyle(
                             fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const Spacer(),
@@ -182,7 +184,9 @@ class _GoalListPageState extends State<GoalListPage> {
                 title: const Text(
                   '수정하기',
                   style: TextStyle(
+                    color: Color.fromRGBO(0x73, 0x73, 0x73, 1.0),
                     fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 onTap: () async {
@@ -190,6 +194,9 @@ class _GoalListPageState extends State<GoalListPage> {
                     '/goal/edit',
                     arguments: goal,
                   );
+                  if (!mounted) {
+                    return;
+                  }
                   Navigator.of(context).pop(GoalActionType.edit);
                 },
               ),
@@ -198,7 +205,9 @@ class _GoalListPageState extends State<GoalListPage> {
                 title: const Text(
                   '삭제하기',
                   style: TextStyle(
+                    color: Color.fromRGBO(0x73, 0x73, 0x73, 1.0),
                     fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 onTap: () {

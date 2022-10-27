@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/goal.dart';
 import 'package:three_days/domain/goal/goal_repository.dart';
 import 'package:three_days/domain/goal/goal_service.dart';
@@ -83,6 +82,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                       style: const TextStyle(
                         color: Color.fromRGBO(0x3F, 0x80, 0xFF, 1.0),
                         fontSize: 13,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -107,7 +107,8 @@ class _GoalWidgetState extends State<GoalWidget> {
             Text(
               widget.goal.title,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(
