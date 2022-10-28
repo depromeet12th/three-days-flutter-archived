@@ -164,6 +164,31 @@ class _GoalEditPageState extends State<GoalEditPage> {
               visible: dateRangeEnabled,
               startDate: startDate,
               endDate: endDate,
+              onTapUp: (_) async {
+                final dateTimeRange = await showDateRangePicker(
+                  context: context,
+                  firstDate: DateTime.now().subtract(const Duration(days: 36500)),
+                  lastDate: DateTime.now().add(const Duration(days: 36500)),
+                  currentDate: DateTime.now(),
+                  builder: (context, Widget? child) => Theme(
+                    data: Theme.of(context).copyWith(
+                      appBarTheme: Theme.of(context).appBarTheme.copyWith(
+                        backgroundColor: Colors.blue,
+                      ),
+                    ),
+                    child: child!,
+                  ),
+                );
+                if (kDebugMode) {
+                  print('dateTimeRange: $dateTimeRange');
+                }
+                if (dateTimeRange != null) {
+                  setState(() {
+                    startDate = dateTimeRange.start;
+                    endDate = dateTimeRange.end;
+                  });
+                }
+              },
             ),
 
             /// 수행 시간
