@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
         if (settings.name == '/mypage') {
           return PageRouteBuilder(
             settings: settings,
-            pageBuilder: (_, __, ___) => const MypagePage(),
+            pageBuilder: (_, __, ___) => MypagePage(),
           );
         }
         return MaterialPageRoute(builder: (_) => GoalListPage());
