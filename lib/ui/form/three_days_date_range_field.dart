@@ -54,12 +54,17 @@ class ThreeDaysDateRangeField extends StatelessWidget {
               ),
             ),
           ),
+          const Divider(
+            height: 1,
+            thickness: 1,
+            color: Color.fromRGBO(0xF1, 0xF1, 0xF1, 1.0),
+          ),
           Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(10.0),
               ),
-              color: Color.fromRGBO(0xF9, 0xFa, 0xFB, 1.0),
+              color: Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
             ),
             height: 45,
             child: Padding(
