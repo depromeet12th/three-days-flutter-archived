@@ -12,6 +12,40 @@ class GoalService {
   final GoalHistoryRepository _goalHistoryRepository = GoalHistoryRepository();
   final ClapRepository _clapRepository = ClapRepository();
 
+  Future<Goal> create(String title) async {
+    final goal = Goal(
+      title: title,
+    );
+    return await _goalRepository.save(goal);
+  }
+
+  Future<Goal> createForSecondDay(String title) async {
+    final goal = Goal(
+      title: title,
+    );
+    await _goalRepository.save(goal);
+    final yesterdayHistory1 = GoalHistory(goalId: goal.goalId);
+    yesterdayHistory1.setCheckedAt(DateTime.now().subtract(const Duration(days: 1)));
+    await _goalHistoryRepository.save(yesterdayHistory1);
+    return goal;
+  }
+
+  Future<Goal> createForThirdDay(String title) async {
+    final goal = Goal(
+      title: title,
+    );
+    await _goalRepository.save(goal);
+    final historyOfYesterday = GoalHistory(goalId: goal.goalId);
+    historyOfYesterday.setCheckedAt(DateTime.now().subtract(const Duration(days: 1)));
+    await _goalHistoryRepository.save(historyOfYesterday);
+
+    final historyOfTheDayBeforeYesterday = GoalHistory(goalId: goal.goalId);
+    historyOfTheDayBeforeYesterday.setCheckedAt(DateTime.now().subtract(const Duration(days: 2)));
+    await _goalHistoryRepository.save(historyOfTheDayBeforeYesterday);
+
+    return goal;
+  }
+
   /// 성공한 이력 개수
   Future<int> countHistories(int goalId) async {
     final count = (await _goalHistoryRepository.findByGoalId(goalId))
