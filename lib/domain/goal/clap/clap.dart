@@ -63,6 +63,11 @@ class Clap {
     this.clapId = clapId;
   }
 
+  @Deprecated('user test')
+  void setCreatedAt(DateTime createdAt) {
+    _createdAt = createdAt;
+  }
+
   @override
   String toString() {
     return 'Clap{clapId: $clapId, goalId: $goalId, goalHistoryId: $goalHistoryId, _createdAt: $_createdAt}';
