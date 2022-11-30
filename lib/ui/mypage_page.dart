@@ -13,8 +13,8 @@ class MypagePage extends StatelessWidget {
         body: Center(
           child: ElevatedButton(
             onPressed: () async {
-              const title = '이불 정리하기';
-              await _goalService.createForThirdDay(title);
+              const String title = '이불 정리하기';
+              await _goalService.createForContinuousDays(title, 2);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Row(
                   children: const [

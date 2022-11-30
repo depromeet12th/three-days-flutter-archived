@@ -19,29 +19,23 @@ class GoalService {
     return await _goalRepository.save(goal);
   }
 
-  Future<Goal> createForSecondDay(String title) async {
-    final goal = Goal(
+  Future<Goal> createForContinuousDays(String title, int days) async {
+    final goal = await _goalRepository.save(Goal(
       title: title,
-    );
-    await _goalRepository.save(goal);
-    final yesterdayHistory1 = GoalHistory(goalId: goal.goalId);
-    yesterdayHistory1.setCheckedAt(DateTime.now().subtract(const Duration(days: 1)));
-    await _goalHistoryRepository.save(yesterdayHistory1);
-    return goal;
-  }
+    ));
 
-  Future<Goal> createForThirdDay(String title) async {
-    final goal = Goal(
-      title: title,
-    );
-    await _goalRepository.save(goal);
-    final historyOfYesterday = GoalHistory(goalId: goal.goalId);
-    historyOfYesterday.setCheckedAt(DateTime.now().subtract(const Duration(days: 1)));
-    await _goalHistoryRepository.save(historyOfYesterday);
+    int count = 0;
+    for (int i = days; i > 0; i--) {
+      final history = GoalHistory(goalId: goal.goalId);
+      history.setCheckedAt(DateTime.now().subtract(Duration(days: i)));
+      await _goalHistoryRepository.save(history);
 
-    final historyOfTheDayBeforeYesterday = GoalHistory(goalId: goal.goalId);
-    historyOfTheDayBeforeYesterday.setCheckedAt(DateTime.now().subtract(const Duration(days: 2)));
-    await _goalHistoryRepository.save(historyOfTheDayBeforeYesterday);
+      if (++count % 3 == 0) {
+        final clap = Clap(goalId: history.goalId, goalHistoryId: history.goalHistoryId);
+        clap.setCreatedAt(DateTime.now().subtract(const Duration(days: 1)));
+        await _clapRepository.save(clap);
+      }
+    }
 
     return goal;
   }
@@ -74,54 +68,24 @@ class GoalService {
   /// 오늘 체크할 칸이 몇번째인지 계산
   Future<int> calculateClapIndex(Goal goal, DateTime now) async {
     final today = DateTime(now.year, now.month, now.day);
-    final yesterday = today.subtract(const Duration(days: 1));
-    final theDayBeforeYesterday = today.subtract(const Duration(days: 2));
-
-    // TODO: goal.StartDate 부터 min(어제,endDate) 구간 중 가장 최근에 clap 받은날 구하기
-    final claps = await _clapRepository.findByGoalId(goal.goalId);
-
-    // history 조회 시작날짜
-    // lastClap != null
-    //  ? lastClap.createdAt.add(Duration(days: 1))
-    //  : min(startDate, yesterday)
-    final DateTime historyFromDate;
-    if (claps.isNotEmpty) {
-      // TODO: clap 시간 역순 정렬
-      final lastClap = claps.first;
-      historyFromDate = lastClap.getCreatedDate().add(const Duration(days: 1));
-    } else {
-      historyFromDate = yesterday;
-    }
-
-    // history 조회 종료날짜
-    // endDate < yesterday ? endDate : yesterday
-    final historyToDate = yesterday;
-
-    // history 목록의 날짜만 뽑고, 시간 역순으로 정렬 및 몇개 연속인지 구하기
-    // 어제x : 0
-    // 어제o - 그제x : 1
-    // 어제o - 그제o : 2
     final goalHistories =
         await _goalHistoryRepository.findByGoalId(goal.goalId);
-    final bool hasYesterday =
-        goalHistories.where((e) => e.isCheckedDateAt(yesterday)).isNotEmpty;
-    if (hasYesterday == false) {
-      // 어제 안했으면, 오늘 첫번째칸 눌러야함
-      return 0;
-    }
-    final bool hasTheDayBeforeYesterday = goalHistories
-        .where((e) => e.isCheckedDateAt(theDayBeforeYesterday))
-        .isNotEmpty;
-    if (hasTheDayBeforeYesterday == false) {
-      // 어제 했고, 그저께 안했으면 두 번째 칸 눌러야함
-      return 1;
-    } else {
-      // 어제 했고, 그저께도 했으면 세 번째 칸 눌러야함
-      return 2;
+
+    // 어제부터 하루씩 과거로 거슬러가면서 연속인지 아닌지 구한다.
+    // 연속이면 계속 하고
+    // 안한날이면 거기까지 며칠이었는지 리턴
+    int days = 0;
+    while (true) {
+      final bool hasDay =
+          goalHistories.where((e) => e.isCheckedDateAt(today.subtract(Duration(days: days + 1)))).isNotEmpty;
+      if (hasDay == false) {
+        return days % 3;
+      }
+      days++;
     }
   }
 
-  /// 오늘 할 일 완료
+  /// 오늘 할 일 완료;
   Future<Clap?> check(Goal goal) async {
     // goalHistory 생성
     final goalHistory = GoalHistory(
