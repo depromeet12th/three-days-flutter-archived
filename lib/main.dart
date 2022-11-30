@@ -52,6 +52,12 @@ void main() async {
     }
   });
 
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   openDatabase(
     join(await getDatabasesPath(), 'three_days.db'),
     // When the database is first created, create a table to store dogs.
