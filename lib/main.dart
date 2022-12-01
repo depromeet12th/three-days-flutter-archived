@@ -1,34 +1,62 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:three_days/my_app.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: '.env');
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  if (defaultTargetPlatform == TargetPlatform.iOS) {
-    var firebaseApiKey = dotenv.get('FIREBASE_API_KEY');
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     if (kDebugMode) {
-      print(firebaseApiKey);
+      print('User granted permission');
     }
-    await Firebase.initializeApp(
-      options: FirebaseOptions(
-        apiKey: firebaseApiKey,
-        appId: '1:526416542267:ios:638558ba14a415bd183a1e',
-        messagingSenderId: '526416542267',
-        projectId: 'three-days-bd5f3',
-        storageBucket: 'three-days-bd5f3.appspot.com',
-        iosClientId:
-            '526416542267-vi5e0m24ogr6n5dmu96oos99k75fu6hn.apps.googleusercontent.com',
-        iosBundleId: 'com.example.threeDays',
-      ),
-    );
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    if (kDebugMode) {
+      print('User granted provisional permission');
+    }
+  } else {
+    if (kDebugMode) {
+      print('User declined or has not accepted permission');
+    }
   }
+
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print('fcmToken: $fcmToken');
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   openDatabase(
     join(await getDatabasesPath(), 'three_days.db'),
