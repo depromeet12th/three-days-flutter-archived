@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:three_days/design/three_days_colors.dart';
 import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/ui/development_page.dart';
 import 'package:three_days/ui/goal/goal_add_page.dart';
 import 'package:three_days/ui/goal/goal_edit_page.dart';
 import 'package:three_days/ui/goal/goal_list_page.dart';
-import 'package:three_days/ui/mypage_page.dart';
+import 'package:three_days/ui/mypage/mypage_page.dart';
+import 'package:three_days/ui/mypage/privacy_policy_page.dart';
+import 'package:three_days/ui/mypage/service_policy_page.dart';
 import 'package:three_days/ui/statistics_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -100,6 +103,24 @@ class MyApp extends StatelessWidget {
           return PageRouteBuilder(
             settings: settings,
             pageBuilder: (_, __, ___) => MypagePage(),
+          );
+        }
+        if (settings.name == '/policy/service') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => const ServicePolicyPage(),
+          );
+        }
+        if (settings.name == '/policy/privacy') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => const PrivacyPolicyPage(),
+          );
+        }
+        if (settings.name == '/development') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => DevelopmentPage(),
           );
         }
         return MaterialPageRoute(builder: (_) => GoalListPage());
