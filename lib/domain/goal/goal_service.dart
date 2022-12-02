@@ -12,6 +12,12 @@ class GoalService {
   final GoalHistoryRepository _goalHistoryRepository = GoalHistoryRepository();
   final ClapRepository _clapRepository = ClapRepository();
 
+  /// 삭제된 습관 목록 조회
+  Future<List<Goal>> getArchivedGoals() async {
+    // TODO: api 연동 필요. query parameter status 로 조회
+    return [];
+  }
+
   Future<Goal> create(String title) async {
     final goal = Goal(
       title: title,
