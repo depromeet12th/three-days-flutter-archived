@@ -6,6 +6,7 @@ import 'package:three_days/ui/development_page.dart';
 import 'package:three_days/ui/goal/goal_add_page.dart';
 import 'package:three_days/ui/goal/goal_edit_page.dart';
 import 'package:three_days/ui/goal/goal_list_page.dart';
+import 'package:three_days/ui/mypage/habit_archived_page.dart';
 import 'package:three_days/ui/mypage/mypage_page.dart';
 import 'package:three_days/ui/mypage/privacy_policy_page.dart';
 import 'package:three_days/ui/mypage/service_policy_page.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           elevation: 0.0,
           backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
           titleTextStyle: TextStyle(
             color: ThreeDaysColors.textBlack,
           ),
@@ -103,6 +105,12 @@ class MyApp extends StatelessWidget {
           return PageRouteBuilder(
             settings: settings,
             pageBuilder: (_, __, ___) => MypagePage(),
+          );
+        }
+        if (settings.name == '/habit-archived') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => HabitArchivedPage(),
           );
         }
         if (settings.name == '/policy/service') {
