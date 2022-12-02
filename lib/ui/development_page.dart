@@ -1,10 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:three_days/domain/goal/goal_service.dart';
 
-class MypagePage extends StatelessWidget {
-  MypagePage({super.key});
+/// 개발, 테스트 편의 기능 모음
+class DevelopmentPage extends StatelessWidget {
+  DevelopmentPage({super.key});
 
   final _goalService = GoalService();
 
@@ -12,6 +13,10 @@ class MypagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text('테스트 편의 기능'),
+          foregroundColor: Colors.blue,
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -24,7 +29,7 @@ class MypagePage extends StatelessWidget {
                     content: Text("FCM Token 이 클립보드에 복사되었습니다."),
                   ));
                 },
-                child: const Text('FCM Token 보기'),
+                child: const Text('FCM Token 복사하기'),
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -48,42 +53,8 @@ class MypagePage extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage('images/icon_home.png'),
-              ),
-              label: '홈',
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage('images/icon_statistics.png'),
-              ),
-              label: '통계',
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage('images/icon_mypage.png'),
-              ),
-              label: '마이페이지',
-            ),
-          ],
-          onTap: (value) {
-            switch (value) {
-              case 0:
-                Navigator.of(context).pushReplacementNamed('/goal/list');
-                break;
-              case 1:
-                Navigator.of(context).pushReplacementNamed('/statistics');
-                break;
-              case 2:
-                break;
-            }
-          },
-          currentIndex: 2,
-        ),
       ),
     );
   }
+
 }

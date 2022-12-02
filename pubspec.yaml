@@ -44,6 +44,7 @@ dependencies:
   intl: ^0.17.0
   flutter_localizations:
     sdk: flutter
+  webview_flutter: ^3.0.4
 
 #dependency_overrides:
 #  firebase_core_platform_interface: 4.5.1
