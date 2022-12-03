@@ -3,31 +3,32 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/domain/habit/habit.dart';
 
-class GoalRepository {
+class HabitRepository {
   static const dbFileName = 'three_days.db';
+  // FIXME: db 는 마이그레이션하는 것보다, 일단 유지하고 나중에 api 붙일 때 지워버릴 예정
   static const goalTableName = 'goal';
 
-  Future<Goal> save(Goal goal) async {
+  Future<Habit> save(Habit habit) async {
     final db = await _getDatabase();
-    final goalId = await db.insert(
+    final habitId = await db.insert(
       goalTableName,
-      goal.toMap(),
+      habit.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    goal.setId(goalId);
+    habit.setId(habitId);
     if (kDebugMode) {
-      print('GoalRepository.save $goal');
+      print('HabitRepository.save $habit');
     }
-    return goal;
+    return habit;
   }
 
-  Future<List<Goal>> findAll() async {
+  Future<List<Habit>> findAll() async {
     final db = await _getDatabase();
     return await db
         .query(goalTableName)
-        .then((value) => value.map((e) => Goal.fromJson(e)).toList());
+        .then((value) => value.map((e) => Habit.fromJson(e)).toList());
   }
 
   Future<void> deleteAll() async {
@@ -35,12 +36,12 @@ class GoalRepository {
     await db.delete(goalTableName);
   }
 
-  Future<void> deleteById(int goalId) async {
+  Future<void> deleteById(int habitId) async {
     final db = await _getDatabase();
     await db.delete(
       goalTableName,
-      where: 'goalId = ?',
-      whereArgs: [goalId],
+      where: 'habitId = ?',
+      whereArgs: [habitId],
     );
   }
 

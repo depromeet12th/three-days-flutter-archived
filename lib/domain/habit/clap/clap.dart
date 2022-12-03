@@ -4,19 +4,19 @@ class Clap {
   /// PK
   int clapId;
 
-  /// goal 식별자
-  final int goalId;
+  /// habit 식별자
+  final int habitId;
 
-  /// goal history 식별자
-  final int goalHistoryId;
+  /// habit history 식별자
+  final int habitHistoryId;
 
   /// 생성시각
   DateTime? _createdAt;
 
   Clap({
     this.clapId = 0,
-    required this.goalId,
-    required this.goalHistoryId,
+    required this.habitId,
+    required this.habitHistoryId,
     DateTime? createdAt,
   }) : _createdAt = createdAt {
     _createdAt ??= DateTime.now();
@@ -25,16 +25,16 @@ class Clap {
   static Clap fromJson(Map<String, dynamic> json) {
     return Clap(
       clapId: json['clapId'] as int,
-      goalId: json['goalId'] as int,
-      goalHistoryId: json['goalHistoryId'] as int,
+      habitId: json['goalId'] as int,
+      habitHistoryId: json['goalHistoryId'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
 
   Map<String, dynamic> toMap() {
     final map = {
-      'goalId': goalId,
-      'goalHistoryId': goalHistoryId,
+      'goalId': habitId,
+      'goalHistoryId': habitHistoryId,
       'createdAt': _createdAt!.toIso8601String(),
     };
     if (clapId > 0) {
@@ -70,6 +70,6 @@ class Clap {
 
   @override
   String toString() {
-    return 'Clap{clapId: $clapId, goalId: $goalId, goalHistoryId: $goalHistoryId, _createdAt: $_createdAt}';
+    return 'Clap{clapId: $clapId, habitId: $habitId, habitHistoryId: $habitHistoryId, _createdAt: $_createdAt}';
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:three_days/domain/goal/clap/clap.dart';
+import 'package:three_days/domain/habit/clap/clap.dart';
 
 class ClapRepository {
   static const dbFileName = 'three_days.db';
@@ -16,12 +16,12 @@ class ClapRepository {
         .then((value) => value.map((e) => Clap.fromJson(e)).toList());
   }
 
-  Future<List<Clap>> findByGoalId(int goalId) async {
+  Future<List<Clap>> findByHabitId(int habitId) async {
     final db = await _getDatabase();
     return db.query(
       clapTableName,
       where: 'goalId = ?',
-      whereArgs: [goalId],
+      whereArgs: [habitId],
     ).then((value) => value.map((e) => Clap.fromJson(e)).toList());
   }
 

@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:three_days/domain/goal/goal.dart';
-import 'package:three_days/domain/goal/goal_repository.dart';
-import 'package:three_days/domain/goal/goal_service.dart';
+import 'package:three_days/domain/habit/habit.dart';
+import 'package:three_days/domain/habit/habit_repository.dart';
+import 'package:three_days/domain/habit/habit_service.dart';
 
-class GoalWidget extends StatefulWidget {
-  GoalWidget({
+class HabitWidget extends StatefulWidget {
+  HabitWidget({
     super.key,
-    required this.goal,
+    required this.habit,
     required this.onKebabMenuPressed,
   });
 
-  final Goal goal;
-  final GoalRepository goalRepository = GoalRepository();
-  final GoalService goalService = GoalService();
-  final void Function(BuildContext context, Goal goal) onKebabMenuPressed;
+  final Habit habit;
+  final HabitRepository habitRepository = HabitRepository();
+  final HabitService habitService = HabitService();
+  final void Function(BuildContext context, Habit habit) onKebabMenuPressed;
 
   @override
   State<StatefulWidget> createState() {
-    return _GoalWidgetState();
+    return _HabitWidgetState();
   }
 }
 
-class _GoalWidgetState extends State<GoalWidget> {
-  late Goal goal;
+class _HabitWidgetState extends State<HabitWidget> {
+  late Habit habit;
   int countOfHistories = 0;
   bool hasCheckedAtToday = false;
 
@@ -32,20 +32,20 @@ class _GoalWidgetState extends State<GoalWidget> {
   @override
   void initState() {
     super.initState();
-    goal = widget.goal;
+    habit = widget.habit;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _asyncMethod();
     });
   }
 
   _asyncMethod() async {
-    final count = await widget.goalService.countHistories(goal.goalId);
-    final isChecked = await widget.goalService.isCheckedDateAt(
-      goal.goalId,
+    final count = await widget.habitService.countHistories(habit.habitId);
+    final isChecked = await widget.habitService.isCheckedDateAt(
+      habit.habitId,
       DateTime.now(),
     );
-    final clapIndex = await widget.goalService.calculateClapIndex(
-      goal,
+    final clapIndex = await widget.habitService.calculateClapIndex(
+      habit,
       DateTime.now(),
     );
     setState(() {
@@ -93,7 +93,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                     alignment: Alignment.centerRight,
                     child: IconButton(
                       onPressed: () {
-                        widget.onKebabMenuPressed.call(context, widget.goal);
+                        widget.onKebabMenuPressed.call(context, widget.habit);
                       },
                       icon: const Icon(
                         Icons.more_vert,
@@ -105,7 +105,7 @@ class _GoalWidgetState extends State<GoalWidget> {
               ],
             ),
             Text(
-              widget.goal.title,
+              widget.habit.title,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -118,19 +118,19 @@ class _GoalWidgetState extends State<GoalWidget> {
               children: [
                 _clapWidget(
                   checked:
-                      widget.goal.isChecked(0, focusedIndex, hasCheckedAtToday),
+                      widget.habit.isChecked(0, focusedIndex, hasCheckedAtToday),
                   focused: 0 == focusedIndex,
                 ),
                 const Spacer(),
                 _clapWidget(
                   checked:
-                      widget.goal.isChecked(1, focusedIndex, hasCheckedAtToday),
+                      widget.habit.isChecked(1, focusedIndex, hasCheckedAtToday),
                   focused: 1 == focusedIndex,
                 ),
                 const Spacer(),
                 _clapWidget(
                   checked:
-                      widget.goal.isChecked(2, focusedIndex, hasCheckedAtToday),
+                      widget.habit.isChecked(2, focusedIndex, hasCheckedAtToday),
                   focused: 2 == focusedIndex,
                 ),
               ],
@@ -154,14 +154,14 @@ class _GoalWidgetState extends State<GoalWidget> {
         if (!focused) {
           return;
         }
-        final isChecked = await widget.goalService.isCheckedDateAt(
-          widget.goal.goalId,
+        final isChecked = await widget.habitService.isCheckedDateAt(
+          widget.habit.habitId,
           DateTime.now(),
         );
         if (isChecked) {
-          await widget.goalService.uncheck(widget.goal);
+          await widget.habitService.uncheck(widget.habit);
         } else {
-          final clap = await widget.goalService.check(widget.goal);
+          final clap = await widget.habitService.check(widget.habit);
           if (clap != null) {
             showDialog(
               context: context,
@@ -195,7 +195,7 @@ class _GoalWidgetState extends State<GoalWidget> {
             );
           }
         }
-        final count = await widget.goalService.countHistories(goal.goalId);
+        final count = await widget.habitService.countHistories(habit.habitId);
         setState(() {
           countOfHistories = count;
           hasCheckedAtToday = !hasCheckedAtToday;

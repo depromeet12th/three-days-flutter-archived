@@ -1,35 +1,47 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:three_days/design/three_days_colors.dart';
-import 'package:three_days/domain/goal/goal.dart';
-import 'package:three_days/domain/goal/goal_repository.dart';
+import 'package:three_days/domain/habit/habit.dart';
+import 'package:three_days/domain/habit/habit_repository.dart';
 import 'package:three_days/ui/form/sub_title_text.dart';
 import 'package:three_days/ui/form/three_days_date_range_field.dart';
 import 'package:three_days/ui/form/three_days_text_form_field.dart';
 import 'package:three_days/ui/form/time_selector_widget.dart';
 
-class GoalAddPage extends StatefulWidget {
-  GoalAddPage({super.key});
+class HabitEditPage extends StatefulWidget {
+  HabitEditPage({
+    super.key,
+    required this.habit,
+  });
 
-  final GoalRepository goalRepository = GoalRepository();
+  final Habit habit;
+  final HabitRepository habitRepository = HabitRepository();
 
   @override
-  State<StatefulWidget> createState() => _GoalAddPageState();
+  State<StatefulWidget> createState() => _HabitEditPageState();
 }
 
-class _GoalAddPageState extends State<GoalAddPage> {
-  static const maxLengthOfTitle = 15;
-  static const maxLengthOfNotificationContent = 20;
-
-  bool dateRangeEnabled = true;
-  bool timeRangeEnabled = true;
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
-  TimeOfDay? remindTime;
+class _HabitEditPageState extends State<HabitEditPage> {
+  final habitTextEditingController = TextEditingController();
+  late bool dateRangeEnabled;
+  late bool timeRangeEnabled;
+  late DateTime startDate;
+  late DateTime endDate;
   TimeOfDay? notificationTime;
-  bool canSubmit = false;
+  TimeOfDay? remindTime;
+  late bool canSubmit;
 
-  final goalTextEditingController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    dateRangeEnabled = true;
+    timeRangeEnabled = true;
+    startDate = DateTime.now();
+    endDate = DateTime.now();
+    habitTextEditingController.text = widget.habit.title;
+    canSubmit = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +49,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
       child: Scaffold(
         body: Column(
           children: [
+
             /// 닫기 버튼
             Align(
               alignment: Alignment.centerRight,
@@ -63,20 +76,19 @@ class _GoalAddPageState extends State<GoalAddPage> {
                 onPressed: !canSubmit
                     ? null
                     : () async {
-                  final goal = await widget.goalRepository.save(
-                    Goal(
-                      title: goalTextEditingController.value.text,
-                    ),
-                  );
+                  widget.habit.update(
+                      title: habitTextEditingController.value.text);
+                  final habit =
+                  await widget.habitRepository.save(widget.habit);
                   if (kDebugMode) {
-                    print('createdGoal: $goal');
+                    print('updatedHabit: $habit');
                   }
                   if (!mounted) {
                     return;
                   }
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/goal/list',
-                        (route) => route.settings.name == '/goal/list',
+                    '/habit/list',
+                        (route) => route.settings.name == '/habit/list',
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -84,7 +96,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
                   minimumSize: const Size.fromHeight(50),
                 ),
                 child: const Text(
-                  '목표 만들기',
+                  '저장',
                   style: TextStyle(
                     fontSize: 16,
                   ),
@@ -109,7 +121,7 @@ class _GoalAddPageState extends State<GoalAddPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '짝심목표 만들기',
+              '짝심목표 수정하기',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -122,9 +134,9 @@ class _GoalAddPageState extends State<GoalAddPage> {
             /// 목표
             const ThreeDaysSubTitleText(data: '목표'),
             ThreeDaysTextFormField(
-              controller: goalTextEditingController,
+              controller: habitTextEditingController,
               hintText: '짝심목표를 알려주세요',
-              maxLength: maxLengthOfTitle,
+              maxLength: 15,
               onChanged: (value) {
                 setState(() {
                   canSubmit = value.isNotEmpty;
@@ -235,11 +247,15 @@ class _GoalAddPageState extends State<GoalAddPage> {
             ),
             const ThreeDaysTextFormField(
               hintText: 'Push 알림 내용을 입력해주세요',
-              maxLength: maxLengthOfNotificationContent,
+              maxLength: 20,
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _getFormattedDate(DateTime dateTime) {
+    return DateFormat('yyyy. MM. dd.').format(dateTime);
   }
 }

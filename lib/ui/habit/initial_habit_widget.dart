@@ -1,8 +1,8 @@
 import 'package:three_days/design/three_days_colors.dart';
 import 'package:flutter/material.dart';
 
-class InitialGoal extends StatelessWidget {
-  const InitialGoal({super.key});
+class InitialHabit extends StatelessWidget {
+  const InitialHabit({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class InitialGoal extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/goal/add');
+                  Navigator.of(context).pushNamed('/habit/add');
                 },
                 child: const Text('목표 만들기'),
               ),

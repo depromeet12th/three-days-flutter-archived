@@ -1,37 +1,37 @@
 /// 짝심할일 완료 이력
-class GoalHistory {
+class HabitHistory {
   /// pk
-  int goalHistoryId;
+  int habitHistoryId;
 
   /// goal 식별자
-  final int goalId;
+  final int habitId;
 
   /// 완료한 시간
   DateTime? _checkedAt;
 
-  GoalHistory({
-    this.goalHistoryId = 0,
-    required this.goalId,
+  HabitHistory({
+    this.habitHistoryId = 0,
+    required this.habitId,
     DateTime? checkedAt,
   }) : _checkedAt = checkedAt {
     _checkedAt ??= DateTime.now();
   }
 
-  static GoalHistory fromJson(Map<String, dynamic> json) {
-    return GoalHistory(
-      goalHistoryId: json['goalHistoryId'] as int,
-      goalId: json['goalId'] as int,
+  static HabitHistory fromJson(Map<String, dynamic> json) {
+    return HabitHistory(
+      habitHistoryId: json['goalHistoryId'] as int,
+      habitId: json['goalId'] as int,
       checkedAt: DateTime.parse(json['checkedAt'] as String),
     );
   }
 
   Map<String, dynamic> toMap() {
     final map = {
-      'goalId': goalId,
+      'goalId': habitId,
       'checkedAt': _checkedAt!.toIso8601String(),
     };
-    if (goalHistoryId > 0) {
-      map['goalHistoryId'] = goalHistoryId;
+    if (habitHistoryId > 0) {
+      map['goalHistoryId'] = habitHistoryId;
     }
     return map;
   }
@@ -56,18 +56,18 @@ class GoalHistory {
         _checkedAt!.isBefore(date.add(const Duration(days: 1)));
   }
 
-  void setId(int goalHistoryId) {
-    if (this.goalHistoryId > 0) {
+  void setId(int habitHistoryId) {
+    if (this.habitHistoryId > 0) {
       return;
     }
-    if (goalHistoryId < 0) {
+    if (habitHistoryId < 0) {
       throw Error();
     }
-    this.goalHistoryId = goalHistoryId;
+    this.habitHistoryId = habitHistoryId;
   }
 
   @override
   String toString() {
-    return 'GoalHistory{goalHistoryId: $goalHistoryId, goalId: $goalId, checkedAt: $_checkedAt}';
+    return 'HabitHistory{habitHistoryId: $habitHistoryId, habitId: $habitId, checkedAt: $_checkedAt}';
   }
 }

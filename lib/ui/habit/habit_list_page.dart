@@ -2,29 +2,29 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:three_days/domain/goal/clap/clap_repository.dart';
-import 'package:three_days/domain/goal/goal.dart';
-import 'package:three_days/domain/goal/goal_repository.dart';
-import 'package:three_days/domain/goal/goal_service.dart';
-import 'package:three_days/domain/goal/history/goal_history_repository.dart';
-import 'package:three_days/ui/goal/goal_add_button.dart';
-import 'package:three_days/ui/goal/goal_widget.dart';
-import 'package:three_days/ui/goal/initial_goal_widget.dart';
+import 'package:three_days/domain/habit/clap/clap_repository.dart';
+import 'package:three_days/domain/habit/habit.dart';
+import 'package:three_days/domain/habit/habit_repository.dart';
+import 'package:three_days/domain/habit/habit_service.dart';
+import 'package:three_days/domain/habit/history/habit_history_repository.dart';
+import 'package:three_days/ui/habit/habit_add_button.dart';
+import 'package:three_days/ui/habit/habit_widget.dart';
+import 'package:three_days/ui/habit/initial_habit_widget.dart';
 
-class GoalListPage extends StatefulWidget {
-  GoalListPage({super.key});
+class HabitListPage extends StatefulWidget {
+  HabitListPage({super.key});
 
-  final GoalRepository goalRepository = GoalRepository();
-  final GoalHistoryRepository goalHistoryRepository = GoalHistoryRepository();
+  final HabitRepository goalRepository = HabitRepository();
+  final HabitHistoryRepository goalHistoryRepository = HabitHistoryRepository();
   final ClapRepository clapRepository = ClapRepository();
-  final GoalService goalService = GoalService();
+  final HabitService goalService = HabitService();
 
   @override
-  State<StatefulWidget> createState() => _GoalListPageState();
+  State<StatefulWidget> createState() => _HabitListPageState();
 }
 
-class _GoalListPageState extends State<GoalListPage> {
-  late List<Goal> goals = [];
+class _HabitListPageState extends State<HabitListPage> {
+  late List<Habit> goals = [];
 
   @override
   void initState() {
@@ -88,7 +88,7 @@ class _GoalListPageState extends State<GoalListPage> {
                           ),
                         ),
                         const Spacer(),
-                        GoalAddButton(visible: goals.isNotEmpty),
+                        HabitAddButton(visible: goals.isNotEmpty),
                       ],
                     ),
                   ],
@@ -139,11 +139,11 @@ class _GoalListPageState extends State<GoalListPage> {
     );
   }
 
-  Widget _getGoals(List<Goal> goals) {
+  Widget _getGoals(List<Habit> goals) {
     if (goals.isEmpty) {
       return Column(
         children: const [
-          InitialGoal(),
+          InitialHabit(),
         ],
       );
     }
@@ -153,8 +153,8 @@ class _GoalListPageState extends State<GoalListPage> {
       itemCount: goals.length,
       itemBuilder: (BuildContext context, int index) => Column(
         children: [
-          GoalWidget(
-            goal: goals[index],
+          HabitWidget(
+            habit: goals[index],
             onKebabMenuPressed: _showModalBottomSheet,
           ),
           const SizedBox(height: 14),
@@ -169,7 +169,7 @@ class _GoalListPageState extends State<GoalListPage> {
 
   /// goal_widget 에서 호출하는 콜백 메서드.
   /// 업데이트 / 삭제하고나서 목록을 갱신하기 위해 사용함
-  void _showModalBottomSheet(BuildContext context, Goal goal) {
+  void _showModalBottomSheet(BuildContext context, Habit goal) {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -197,7 +197,7 @@ class _GoalListPageState extends State<GoalListPage> {
                 ),
                 onTap: () async {
                   await Navigator.of(context).pushNamed(
-                    '/goal/edit',
+                    '/habit/edit',
                     arguments: goal,
                   );
                   if (!mounted) {
@@ -283,7 +283,7 @@ class _GoalListPageState extends State<GoalListPage> {
                     ),
                   ).then((value) async {
                     if (value != null && value == DeleteActionType.delete) {
-                      await widget.goalService.delete(goal.goalId);
+                      await widget.goalService.delete(goal.habitId);
                       if (!mounted) {
                         return;
                       }

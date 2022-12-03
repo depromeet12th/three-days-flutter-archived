@@ -1,57 +1,57 @@
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:three_days/domain/goal/history/goal_history.dart';
+import 'package:three_days/domain/habit/history/habit_history.dart';
 
-class GoalHistoryRepository {
+class HabitHistoryRepository {
   static const dbFileName = 'three_days.db';
   static const goalHistoryTableName = 'goal_history';
 
-  Future<List<GoalHistory>> findAll() async {
+  Future<List<HabitHistory>> findAll() async {
     final db = await _getDatabase();
     return db
         .query(goalHistoryTableName)
-        .then((value) => value.map((e) => GoalHistory.fromJson(e)).toList());
+        .then((value) => value.map((e) => HabitHistory.fromJson(e)).toList());
   }
 
-  Future<List<GoalHistory>> findByGoalId(int goalId) async {
+  Future<List<HabitHistory>> findByHabitId(int habitId) async {
     final db = await _getDatabase();
     return db.query(
       goalHistoryTableName,
       where: 'goalId = ?',
-      whereArgs: [goalId],
-    ).then((value) => value.map((e) => GoalHistory.fromJson(e)).toList());
+      whereArgs: [habitId],
+    ).then((value) => value.map((e) => HabitHistory.fromJson(e)).toList());
   }
 
-  Future<GoalHistory> save(GoalHistory goalHistory) async {
+  Future<HabitHistory> save(HabitHistory habitHistory) async {
     final db = await _getDatabase();
-    final goalHistoryId = await db.insert(
+    final habitHistoryId = await db.insert(
       goalHistoryTableName,
-      goalHistory.toMap(),
+      habitHistory.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    goalHistory.setId(goalHistoryId);
+    habitHistory.setId(habitHistoryId);
     if (kDebugMode) {
-      print('GoalHistoryRepository.save $goalHistory');
+      print('HabitHistoryRepository.save $habitHistory');
     }
-    return goalHistory;
+    return habitHistory;
   }
 
-  Future<void> delete(int goalHistoryId) async {
+  Future<void> delete(int habitHistoryId) async {
     final db = await _getDatabase();
     await db.delete(
       goalHistoryTableName,
       where: 'goalHistoryId = ?',
-      whereArgs: [goalHistoryId],
+      whereArgs: [habitHistoryId],
     );
   }
 
-  Future<void> deleteByGoalId(int goalId) async {
+  Future<void> deleteByHabitId(int habitId) async {
     final db = await _getDatabase();
     await db.delete(
       goalHistoryTableName,
       where: 'goalId = ?',
-      whereArgs: [goalId],
+      whereArgs: [habitId],
     );
   }
 
