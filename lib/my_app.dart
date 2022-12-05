@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:three_days/design/three_days_colors.dart';
-import 'package:three_days/domain/goal/goal.dart';
+import 'package:three_days/domain/habit/habit.dart';
 import 'package:three_days/ui/development_page.dart';
-import 'package:three_days/ui/goal/goal_add_page.dart';
-import 'package:three_days/ui/goal/goal_edit_page.dart';
-import 'package:three_days/ui/goal/goal_list_page.dart';
+import 'package:three_days/ui/habit/habit_add_page.dart';
+import 'package:three_days/ui/habit/habit_edit_page.dart';
+import 'package:three_days/ui/habit/habit_list_page.dart';
 import 'package:three_days/ui/mypage/habit_archived_page.dart';
 import 'package:three_days/ui/mypage/mypage_page.dart';
 import 'package:three_days/ui/mypage/privacy_policy_page.dart';
@@ -74,25 +74,25 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/goal/list',
+      initialRoute: '/habit/list',
       onGenerateRoute: (settings) {
-        if (settings.name == '/goal/list') {
+        if (settings.name == '/habit/list') {
           return PageRouteBuilder(
             settings: settings,
-            pageBuilder: (_, __, ___) => GoalListPage(),
+            pageBuilder: (_, __, ___) => HabitListPage(),
           );
         }
-        if (settings.name == '/goal/add') {
+        if (settings.name == '/habit/add') {
           return PageRouteBuilder(
             settings: settings,
-            pageBuilder: (_, __, ___) => GoalAddPage(),
+            pageBuilder: (_, __, ___) => HabitAddPage(),
           );
         }
-        if (settings.name == '/goal/edit') {
+        if (settings.name == '/habit/edit') {
           return PageRouteBuilder(
             settings: settings,
             pageBuilder: (_, __, ___) =>
-                GoalEditPage(goal: settings.arguments as Goal),
+                HabitEditPage(habit: settings.arguments as Habit),
           );
         }
         if (settings.name == '/statistics') {
@@ -131,7 +131,7 @@ class MyApp extends StatelessWidget {
             pageBuilder: (_, __, ___) => DevelopmentPage(),
           );
         }
-        return MaterialPageRoute(builder: (_) => GoalListPage());
+        return MaterialPageRoute(builder: (_) => HabitListPage());
       },
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

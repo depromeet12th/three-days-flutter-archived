@@ -1,10 +1,10 @@
 // TODO: startDate, endDate 추가
-class Goal {
-  int goalId;
+class Habit {
+  int habitId;
   String title;
 
-  Goal({
-    this.goalId = 0,
+  Habit({
+    this.habitId = 0,
     required this.title,
   });
 
@@ -24,22 +24,22 @@ class Goal {
     final Map<String, dynamic> map = {
       'title': title,
     };
-    if (goalId > 0) {
-      map['goalId'] = goalId;
+    if (habitId > 0) {
+      map['goalId'] = habitId;
     }
     return map;
   }
 
-  static Goal fromJson(Map<String, dynamic> json) {
-    return Goal(
-      goalId: json['goalId'] as int,
+  static Habit fromJson(Map<String, dynamic> json) {
+    return Habit(
+      habitId: json['goalId'] as int,
       title: json['title'] as String,
     );
   }
 
   @override
   String toString() {
-    return 'Goal{goalId: $goalId, title: $title}';
+    return 'Habit{habitId: $habitId, title: $title}';
   }
 
   void update({
@@ -49,12 +49,12 @@ class Goal {
   }
 
   void setId(int goalId) {
-    if (this.goalId > 0) {
+    if (this.habitId > 0) {
       return;
     }
     if (goalId < 0) {
       throw Error();
     }
-    this.goalId = goalId;
+    this.habitId = goalId;
   }
 }

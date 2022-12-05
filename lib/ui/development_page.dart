@@ -1,14 +1,13 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:three_days/domain/goal/goal_service.dart';
+import 'package:three_days/domain/habit/habit_service.dart';
 
 /// 개발, 테스트 편의 기능 모음
 class DevelopmentPage extends StatelessWidget {
   DevelopmentPage({super.key});
 
-  final _goalService = GoalService();
-
+  final _habitService = HabitService();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,7 +33,7 @@ class DevelopmentPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   const String title = '이불 정리하기';
-                  await _goalService.createForContinuousDays(title, 2);
+                  await _habitService.createForContinuousDays(title, 2);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Row(
                       children: const [

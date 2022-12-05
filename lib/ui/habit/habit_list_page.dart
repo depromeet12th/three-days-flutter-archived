@@ -2,29 +2,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:three_days/domain/goal/clap/clap_repository.dart';
-import 'package:three_days/domain/goal/goal.dart';
-import 'package:three_days/domain/goal/goal_repository.dart';
-import 'package:three_days/domain/goal/goal_service.dart';
-import 'package:three_days/domain/goal/history/goal_history_repository.dart';
-import 'package:three_days/ui/goal/goal_add_button.dart';
-import 'package:three_days/ui/goal/goal_widget.dart';
-import 'package:three_days/ui/goal/initial_goal_widget.dart';
+import 'package:three_days/domain/habit/clap/clap_repository.dart';
+import 'package:three_days/domain/habit/habit.dart';
+import 'package:three_days/domain/habit/habit_repository.dart';
+import 'package:three_days/domain/habit/habit_service.dart';
+import 'package:three_days/domain/habit/history/habit_history_repository.dart';
+import 'package:three_days/ui/habit/habit_widget.dart';
 
-class GoalListPage extends StatefulWidget {
-  GoalListPage({super.key});
+class HabitListPage extends StatefulWidget {
+  HabitListPage({super.key});
 
-  final GoalRepository goalRepository = GoalRepository();
-  final GoalHistoryRepository goalHistoryRepository = GoalHistoryRepository();
+  final HabitRepository habitRepository = HabitRepository();
+  final HabitHistoryRepository habitHistoryRepository = HabitHistoryRepository();
   final ClapRepository clapRepository = ClapRepository();
-  final GoalService goalService = GoalService();
+  final HabitService habitService = HabitService();
 
   @override
-  State<StatefulWidget> createState() => _GoalListPageState();
+  State<StatefulWidget> createState() => _HabitListPageState();
 }
 
-class _GoalListPageState extends State<GoalListPage> {
-  late List<Goal> goals = [];
+class _HabitListPageState extends State<HabitListPage> {
+  late List<Habit> habits = [];
 
   @override
   void initState() {
@@ -35,14 +33,14 @@ class _GoalListPageState extends State<GoalListPage> {
   }
 
   _asyncMethod() async {
-    final goalList = await widget.goalRepository.findAll();
+    final habitList = await widget.habitRepository.findAll();
     setState(() {
-      goals.addAll(goalList);
+      habits.addAll(habitList);
     });
 
     if (kDebugMode) {
-      print('goals: $goals');
-      print('goalHistories: ${await widget.goalHistoryRepository.findAll()}');
+      print('habits: $habits');
+      print('habitHistories: ${await widget.habitHistoryRepository.findAll()}');
       print('claps: ${await widget.clapRepository.findAll()}');
     }
   }
@@ -51,53 +49,40 @@ class _GoalListPageState extends State<GoalListPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(73),
+          child: AppBar(
+            title: Text(
+              _getFormattedDate(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            centerTitle: false,
+            actions: [
+              IconButton(
+                onPressed: () {},
+                // TODO: 벨모양 아이콘 적용
+                icon: Icon(Icons.add),
+              ),
+            ],
+            backgroundColor: Color(0xFFF4F6F8),
+          ),
+        ),
         body: Container(
-          color: const Color.fromRGBO(0xFF, 0xFF, 0xFF, 1.0),
+          color: Color(0xFFF4F6F8),
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 20.0,
+              top: 12.0,
               left: 20.0,
               right: 20.0,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 25),
-                    Text(
-                      _getFormattedDate(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(0x8F, 0x8F, 0x8F, 1.0),
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '작심삼일에서\n작심삼백일까지 함께해요.',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Spacer(),
-                        GoalAddButton(visible: goals.isNotEmpty),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                Expanded(
-                  child: _getGoals(goals),
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _getWidgets(),
+              ),
             ),
           ),
         ),
@@ -139,37 +124,23 @@ class _GoalListPageState extends State<GoalListPage> {
     );
   }
 
-  Widget _getGoals(List<Goal> goals) {
-    if (goals.isEmpty) {
-      return Column(
-        children: const [
-          InitialGoal(),
-        ],
-      );
-    }
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: goals.length,
-      itemBuilder: (BuildContext context, int index) => Column(
-        children: [
-          GoalWidget(
-            goal: goals[index],
-            onKebabMenuPressed: _showModalBottomSheet,
-          ),
-          const SizedBox(height: 14),
-        ],
-      ),
-    );
+  String _getFormattedDate() {
+    return DateFormat('MM월 dd일 E요일', 'ko').format(DateTime.now());
   }
 
-  String _getFormattedDate() {
-    return DateFormat('MM. dd. (E)', 'ko').format(DateTime.now());
+  List<Widget> _getWidgets() {
+    final List<Widget> widgets = habits.map((e) => HabitWidget(
+      habit: e,
+      onKebabMenuPressed: _showModalBottomSheet,
+    )).toList();
+    // FIXME: 목록 맨밑에 추가버튼 있어야함
+    // widgets.add(InitialHabit());
+    return widgets;
   }
 
   /// goal_widget 에서 호출하는 콜백 메서드.
   /// 업데이트 / 삭제하고나서 목록을 갱신하기 위해 사용함
-  void _showModalBottomSheet(BuildContext context, Goal goal) {
+  void _showModalBottomSheet(BuildContext context, Habit goal) {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -197,7 +168,7 @@ class _GoalListPageState extends State<GoalListPage> {
                 ),
                 onTap: () async {
                   await Navigator.of(context).pushNamed(
-                    '/goal/edit',
+                    '/habit/edit',
                     arguments: goal,
                   );
                   if (!mounted) {
@@ -283,7 +254,7 @@ class _GoalListPageState extends State<GoalListPage> {
                     ),
                   ).then((value) async {
                     if (value != null && value == DeleteActionType.delete) {
-                      await widget.goalService.delete(goal.goalId);
+                      await widget.habitService.delete(goal.habitId);
                       if (!mounted) {
                         return;
                       }
@@ -322,7 +293,7 @@ class _GoalListPageState extends State<GoalListPage> {
         );
       if (result == GoalActionType.delete) {
         setState(() {
-          goals.remove(goal);
+          habits.remove(goal);
         });
       }
     });

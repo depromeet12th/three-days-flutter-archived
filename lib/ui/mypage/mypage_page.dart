@@ -208,7 +208,7 @@ class _MypagePageState extends State<MypagePage> {
           onTap: (value) {
             switch (value) {
               case 0:
-                Navigator.of(context).pushReplacementNamed('/goal/list');
+                Navigator.of(context).pushReplacementNamed('/habit/list');
                 break;
               case 1:
                 Navigator.of(context).pushReplacementNamed('/statistics');

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:three_days/domain/goal/goal.dart';
-import 'package:three_days/domain/goal/goal_service.dart';
+import 'package:three_days/domain/habit/habit.dart';
+import 'package:three_days/domain/habit/habit_service.dart';
 
 /// 보관된 습관 목록 (=휴지통)
 class HabitArchivedPage extends StatefulWidget {
   HabitArchivedPage({super.key});
 
-  final _goalService = GoalService();
+  final _habitService = HabitService();
 
   @override
   State<StatefulWidget> createState() => _HabitArchivedPageState();
@@ -15,7 +15,7 @@ class HabitArchivedPage extends StatefulWidget {
 class _HabitArchivedPageState extends State<HabitArchivedPage> {
   late bool editable;
   late bool needsOnboarding;
-  List<Goal> archivedGoals = [];
+  List<Habit> archivedGoals = [];
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _HabitArchivedPageState extends State<HabitArchivedPage> {
   }
 
   _asyncMethod() async {
-    final fetchedGoals = await widget._goalService.getArchivedGoals();
+    final fetchedGoals = await widget._habitService.getArchivedHabits();
     setState(() {
       archivedGoals.addAll(fetchedGoals);
     });

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class GoalAddButton extends StatefulWidget {
-  const GoalAddButton({
+class HabitAddButton extends StatefulWidget {
+  const HabitAddButton({
     super.key,
     required this.visible,
   });
@@ -9,10 +9,10 @@ class GoalAddButton extends StatefulWidget {
   final bool visible;
 
   @override
-  State<StatefulWidget> createState() => _GoalAddButtonState();
+  State<StatefulWidget> createState() => _HabitAddButtonState();
 }
 
-class _GoalAddButtonState extends State<GoalAddButton> {
+class _HabitAddButtonState extends State<HabitAddButton> {
   bool isPressed = false;
 
   @override
@@ -27,7 +27,7 @@ class _GoalAddButtonState extends State<GoalAddButton> {
           setState(() {
             isPressed = false;
           });
-          Navigator.of(context).pushNamed('/goal/add');
+          Navigator.of(context).pushNamed('/habit/add');
         },
         onTapCancel: () {
           setState(() {
