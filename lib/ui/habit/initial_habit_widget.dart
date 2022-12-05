@@ -1,4 +1,3 @@
-import 'package:three_days/design/three_days_colors.dart';
 import 'package:flutter/material.dart';
 
 class InitialHabit extends StatelessWidget {
@@ -6,41 +5,35 @@ class InitialHabit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      child: Center(
+    return GestureDetector(
+      onTapUp: (details) {
+        Navigator.of(context).pushNamed('/habit/add');
+      },
+      child:  Container(
+        decoration: const BoxDecoration(
+          color: Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
+          padding: const EdgeInsets.symmetric(vertical: 56),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('images/initial_clap.png'),
-              const SizedBox(height: 10),
-              const Text(
-                '짝심삼일 시작해보실래요?',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFFD8DCE2),
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+                child: Icon(
+                  Icons.add,
+                  color: Color(0xFF8E95A3),
                 ),
               ),
-              const SizedBox(height: 5),
-              const Text(
-                '3일을 채울 때 마다 짝! 박수를 쳐드려요',
-                style: TextStyle(
-                  color: Color.fromRGBO(0x75, 0x75, 0x75, 1.0),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
+              SizedBox(
+                width: 8,
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/habit/add');
-                },
-                child: const Text('목표 만들기'),
-              ),
+              Text('습관 만들기'),
             ],
           ),
         ),
