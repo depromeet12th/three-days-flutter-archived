@@ -62,7 +62,9 @@ class _HabitListPageState extends State<HabitListPage> {
             centerTitle: false,
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/notification');
+                },
                 // TODO: 벨모양 아이콘 적용
                 icon: Icon(Icons.add),
               ),
