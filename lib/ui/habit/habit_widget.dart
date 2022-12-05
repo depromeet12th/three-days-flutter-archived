@@ -60,83 +60,91 @@ class _HabitWidgetState extends State<HabitWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
-        color: const Color.fromRGBO(0xED, 0xF6, 0xFF, 1.0),
+        color: Colors.white,
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        child: Column(
-          children: [
-            Row(
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(),
+            child: IconButton(
+              onPressed: () {
+                widget.onKebabMenuPressed.call(context, widget.habit);
+              },
+              icon: const Icon(
+                Icons.more_vert,
+                color: Color.fromRGBO(0xA6, 0xA6, 0xA6, 1.0),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Spacer(),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7.0),
-                    color: const Color.fromRGBO(0xD3, 0xE5, 0xFF, 1.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 12.5),
-                    child: Text(
-                      '짝심 $countOfHistories일',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('🎯'),
+                    SizedBox(width: 6),
+                    Text(
+                      widget.habit.title,
                       style: const TextStyle(
-                        color: Color.fromRGBO(0x3F, 0x80, 0xFF, 1.0),
-                        fontSize: 13,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
+                  ],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () {
-                        widget.onKebabMenuPressed.call(context, widget.habit);
-                      },
-                      icon: const Icon(
-                        Icons.more_vert,
-                        color: Color.fromRGBO(0xA6, 0xA6, 0xA6, 1.0),
-                      ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.access_alarm_outlined),
+                    SizedBox(
+                      width: 7,
                     ),
-                  ),
+                    Text('5개'),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('|'),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('월,수,금'),
+                  ],
+                ),
+                const SizedBox(height: 18),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _clapWidget(
+                      checked: widget.habit
+                          .isChecked(0, focusedIndex, hasCheckedAtToday),
+                      focused: 0 == focusedIndex,
+                      sequence: 1,
+                    ),
+                    SizedBox(width: 16),
+                    _clapWidget(
+                      checked: widget.habit
+                          .isChecked(1, focusedIndex, hasCheckedAtToday),
+                      focused: 1 == focusedIndex,
+                      sequence: 2,
+                    ),
+                    SizedBox(width: 16),
+                    _clapWidget(
+                      checked: widget.habit
+                          .isChecked(2, focusedIndex, hasCheckedAtToday),
+                      focused: 2 == focusedIndex,
+                      sequence: 3,
+                    ),
+                  ],
                 ),
               ],
             ),
-            Text(
-              widget.habit.title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                _clapWidget(
-                  checked:
-                      widget.habit.isChecked(0, focusedIndex, hasCheckedAtToday),
-                  focused: 0 == focusedIndex,
-                ),
-                const Spacer(),
-                _clapWidget(
-                  checked:
-                      widget.habit.isChecked(1, focusedIndex, hasCheckedAtToday),
-                  focused: 1 == focusedIndex,
-                ),
-                const Spacer(),
-                _clapWidget(
-                  checked:
-                      widget.habit.isChecked(2, focusedIndex, hasCheckedAtToday),
-                  focused: 2 == focusedIndex,
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -145,10 +153,11 @@ class _HabitWidgetState extends State<HabitWidget> {
   /// focused: 오늘껀지
   Widget _clapWidget({
     required bool checked,
+    required int sequence,
     bool focused = false,
   }) {
-    final backgroundColor =
-        checked ? Colors.white : const Color.fromRGBO(220, 229, 238, 1.0);
+    final primary = Color(0xFF34C185);
+    final backgroundColor = checked ? primary : Color(0xFFDFF5EC);
     return GestureDetector(
       onTapUp: (details) async {
         if (!focused) {
@@ -203,22 +212,31 @@ class _HabitWidgetState extends State<HabitWidget> {
       },
       child: Container(
         decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: backgroundColor,
-
-            /// XXX: 테두리가 안쪽으로 그려지지 않아서 선택되지 않은 항목은 배경색이랑 같은 테두리를 그림
-            border: Border.all(
-              color: focused
-                  ? const Color.fromRGBO(0x74, 0xA3, 0xFF, 1.0)
-                  : backgroundColor,
-              strokeAlign: BorderSide.strokeAlignInside,
-              width: 3.0,
-            )),
+          shape: BoxShape.circle,
+          color: backgroundColor,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(9.0),
-          child: Image.asset(
-            checked ? 'images/clap_checked.png' : 'images/clap_unchecked.png',
-          ),
+          child: !hasCheckedAtToday && focused
+              ? SizedBox(
+                  width: 34,
+                  height: 34,
+                  child: Center(
+                    child: Text(
+                      sequence.toString(),
+                      style: TextStyle(
+                        color: primary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                )
+              : Icon(
+                  Icons.check_rounded,
+                  color: Colors.white,
+                  size: 34.0,
+                ),
         ),
       ),
     );
