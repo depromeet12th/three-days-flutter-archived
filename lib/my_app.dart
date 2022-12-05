@@ -10,6 +10,7 @@ import 'package:three_days/ui/mypage/habit_archived_page.dart';
 import 'package:three_days/ui/mypage/mypage_page.dart';
 import 'package:three_days/ui/mypage/privacy_policy_page.dart';
 import 'package:three_days/ui/mypage/service_policy_page.dart';
+import 'package:three_days/ui/notification/notification_list_page.dart';
 import 'package:three_days/ui/statistics_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -129,6 +130,12 @@ class MyApp extends StatelessWidget {
           return PageRouteBuilder(
             settings: settings,
             pageBuilder: (_, __, ___) => DevelopmentPage(),
+          );
+        }
+        if (settings.name == '/notification') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => NotificationListPage(),
           );
         }
         return MaterialPageRoute(builder: (_) => HabitListPage());
