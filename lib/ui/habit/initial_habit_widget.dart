@@ -9,7 +9,7 @@ class InitialHabit extends StatelessWidget {
       onTapUp: (details) {
         Navigator.of(context).pushNamed('/habit/add');
       },
-      child:  Container(
+      child: Container(
         decoration: const BoxDecoration(
           color: Color.fromRGBO(0xF9, 0xFA, 0xFB, 1.0),
           borderRadius: BorderRadius.all(Radius.circular(20)),

@@ -11,7 +11,8 @@ import 'package:three_days/ui/mypage/mypage_page.dart';
 import 'package:three_days/ui/mypage/privacy_policy_page.dart';
 import 'package:three_days/ui/mypage/service_policy_page.dart';
 import 'package:three_days/ui/notification/notification_list_page.dart';
-import 'package:three_days/ui/statistics_page.dart';
+import 'package:three_days/ui/statistics/statistics_detail_page.dart';
+import 'package:three_days/ui/statistics/statistics_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -96,10 +97,16 @@ class MyApp extends StatelessWidget {
                 HabitEditPage(habit: settings.arguments as Habit),
           );
         }
-        if (settings.name == '/statistics') {
+        if (settings.name == StatisticsPage.routeName) {
           return PageRouteBuilder(
             settings: settings,
-            pageBuilder: (_, __, ___) => const StatisticsPage(),
+            pageBuilder: (_, __, ___) => StatisticsPage(),
+          );;
+        }
+        if (settings.name == StatisticsDetailPage.routeName) {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => StatisticsDetailPage(),
           );
         }
         if (settings.name == '/mypage') {
