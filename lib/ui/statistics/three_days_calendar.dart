@@ -154,8 +154,9 @@ class _ThreeDaysCalendarState extends State<ThreeDaysCalendar> {
 
     // prefix
     var prefixCount = firstDayOfThisMonth.weekday % 7;
-    while (prefixCount-- > 0) {
+    while (prefixCount > 0) {
       days.add(firstDayOfThisMonth.subtract(Duration(days: prefixCount)));
+      prefixCount -= 1;
     }
     // content
     var contentCount = 0;
