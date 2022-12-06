@@ -31,6 +31,13 @@ class HabitRepository {
         .then((value) => value.map((e) => Habit.fromJson(e)).toList());
   }
 
+  Future<Habit> findById(int habitId) async {
+    return Habit(
+      habitId: habitId,
+      title: '아침 챙겨먹기',
+    );
+  }
+
   Future<void> deleteAll() async {
     final db = await _getDatabase();
     await db.delete(goalTableName);
