@@ -6,6 +6,10 @@ import 'package:three_days/ui/development_page.dart';
 import 'package:three_days/ui/habit/habit_add_page.dart';
 import 'package:three_days/ui/habit/habit_edit_page.dart';
 import 'package:three_days/ui/habit/habit_list_page.dart';
+import 'package:three_days/ui/mate/create/mate_create_character_page.dart';
+import 'package:three_days/ui/mate/create/mate_create_nickname_page.dart';
+import 'package:three_days/ui/mate/create/mate_create_page.dart';
+import 'package:three_days/ui/mate/mate_page.dart';
 import 'package:three_days/ui/mypage/habit_archived_page.dart';
 import 'package:three_days/ui/mypage/mypage_page.dart';
 import 'package:three_days/ui/mypage/privacy_policy_page.dart';
@@ -107,6 +111,31 @@ class MyApp extends StatelessWidget {
           return PageRouteBuilder(
             settings: settings,
             pageBuilder: (_, __, ___) => StatisticsDetailPage(),
+          );
+        }
+        /// mate
+        if (settings.name == MatePage.routeName) {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => MatePage(),
+          );
+        }
+        if (settings.name == MateCreatePage.routeName) {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => MateCreatePage(),
+          );
+        }
+        if (settings.name == MateCreateCharacterPage.routeName) {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => MateCreateCharacterPage(),
+          );
+        }
+        if (settings.name == MateCreateNicknamePage.routeName) {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) => MateCreateNicknamePage(),
           );
         }
         if (settings.name == '/mypage') {

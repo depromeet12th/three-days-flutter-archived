@@ -45,6 +45,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   webview_flutter: ^3.0.4
+  dots_indicator: ^2.1.0
 
 #dependency_overrides:
 #  firebase_core_platform_interface: 4.5.1

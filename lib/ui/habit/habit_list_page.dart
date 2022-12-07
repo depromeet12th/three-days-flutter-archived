@@ -8,6 +8,7 @@ import 'package:three_days/domain/habit/habit_repository.dart';
 import 'package:three_days/domain/habit/habit_service.dart';
 import 'package:three_days/domain/habit/history/habit_history_repository.dart';
 import 'package:three_days/ui/habit/habit_widget.dart';
+import 'package:three_days/ui/mate/mate_page.dart';
 
 class HabitListPage extends StatefulWidget {
   HabitListPage({super.key});
@@ -103,6 +104,10 @@ class _HabitListPageState extends State<HabitListPage> {
               label: '통계',
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.access_alarm_outlined),
+              label: '짝궁',
+            ),
+            BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage('images/icon_mypage.png'),
               ),
@@ -117,6 +122,9 @@ class _HabitListPageState extends State<HabitListPage> {
                 Navigator.of(context).pushReplacementNamed('/statistics');
                 break;
               case 2:
+                Navigator.of(context).pushReplacementNamed(MatePage.routeName);
+                break;
+              case 3:
                 Navigator.of(context).pushReplacementNamed('/mypage');
                 break;
             }
@@ -140,7 +148,7 @@ class _HabitListPageState extends State<HabitListPage> {
     return widgets;
   }
 
-  /// goal_widget 에서 호출하는 콜백 메서드.
+  /// habit_widget 에서 호출하는 콜백 메서드.
   /// 업데이트 / 삭제하고나서 목록을 갱신하기 위해 사용함
   void _showModalBottomSheet(BuildContext context, Habit goal) {
     showModalBottomSheet<void>(
