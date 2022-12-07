@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:three_days/ui/mate/mate_page.dart';
 import 'package:three_days/ui/statistics/statistics_detail_page.dart';
 
 import '../../domain/habit/habit.dart';
@@ -12,11 +13,12 @@ class StatisticsPage extends StatelessWidget {
     Navigator.of(context).pushNamed(routeName);
   }
 
-  final gray700 = Color(0xFF353C49);
-  final gray300 = Color(0xFFD8DCE2);
-  final green50 = Color(0xFF34C185);
-  final gray500 = Color(0xFF8E95A3);
   final gray100 = Color(0xFFF4F6F8);
+  final gray300 = Color(0xFFD8DCE2);
+  final gray500 = Color(0xFF8E95A3);
+  final gray700 = Color(0xFF353C49);
+  final green50 = Color(0xFF34C185);
+
   final ScrollController _controller = ScrollController();
 
   @override
@@ -164,6 +166,10 @@ class StatisticsPage extends StatelessWidget {
               label: '통계',
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.access_alarm_outlined),
+              label: '짝궁',
+            ),
+            BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage('images/icon_mypage.png'),
               ),
@@ -178,6 +184,9 @@ class StatisticsPage extends StatelessWidget {
               case 1:
                 break;
               case 2:
+                Navigator.of(context).pushReplacementNamed(MatePage.routeName);
+                break;
+              case 3:
                 Navigator.of(context).pushReplacementNamed('/mypage');
                 break;
             }

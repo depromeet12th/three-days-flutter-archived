@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:three_days/ui/mate/mate_page.dart';
 
 class MypagePage extends StatefulWidget {
   const MypagePage({super.key});
@@ -28,11 +29,11 @@ class _MypagePageState extends State<MypagePage> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(73.0),
           child: AppBar(
-            backgroundColor: const Color(0xFFCECECE),
+            backgroundColor: Color(0xFFF4F6F8),
           ),
         ),
         body: Container(
-          color: const Color(0xFFCECECE),
+          color: Color(0xFFF4F6F8),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 30,
@@ -199,6 +200,10 @@ class _MypagePageState extends State<MypagePage> {
               label: '통계',
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.access_alarm_outlined),
+              label: '짝궁',
+            ),
+            BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage('images/icon_mypage.png'),
               ),
@@ -214,10 +219,13 @@ class _MypagePageState extends State<MypagePage> {
                 Navigator.of(context).pushReplacementNamed('/statistics');
                 break;
               case 2:
+                Navigator.of(context).pushReplacementNamed(MatePage.routeName);
+                break;
+              case 3:
                 break;
             }
           },
-          currentIndex: 2,
+          currentIndex: 3,
         ),
       ),
     );

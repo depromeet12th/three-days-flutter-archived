@@ -1,0 +1,5 @@
+enum MateCharacterType {
+  carrot,
+  stick,
+  ;
+}
